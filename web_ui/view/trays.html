@@ -1,0 +1,114 @@
+<div class="page-title">
+  <div class="title_left">
+	<h3>PACKED INFORMATION LIST</h3>
+  </div>
+</div>
+
+<div class="clearfix"></div>
+{{#Granted}}
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="x_panel">
+	  <div class="x_title">
+		<h2><small>List of all trays processed in the system</small></h2>
+		<div class="clearfix"></div>
+	  </div>
+	  <div class="x_content">
+		<table width="100%" id="Tray-datatable" class="table table-striped jambo_table table-bordered nowrap">
+			<thead>
+				<tr>
+					<th>Collection_Point_Ref</th>
+					<th>Collection_Point</th>
+					<th>Status</th>
+					<th>Production_Batch</th>
+					<th>File_No</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	  </div>
+	</div>
+  </div>
+ </div>
+ {{/Granted}}
+ {{^Granted}}
+ <div class="row">
+	<div class="jumbotron">
+		<div class="col-sm-12">
+			<div style="text-align:center;"><h4 class="text-danger"><b>USER NOT AUTHERISED</b></h4></div>
+		</div>
+	</div>
+ </div>
+ {{/Granted}}
+
+ <div class="modal fade" id="ReprintModal" tabindex="-1" role="dialog">
+     <div class="modal-dialog">
+         <div class="modal-content">
+ 			<div class="modal-header">
+ 				<button type="button" class="close" data-dismiss="modal">&times;</button>
+ 				<h4 class="text-center">Print Carton Script Label</h4>
+ 			</div>
+
+             <input type = "hidden" id="sBatchID" value="">
+
+             <div class="modal-body" id="ModalStartBody">
+				  <div class="row">
+						<div class="col-md-4 mb-3">
+						  <label for="sCartonID">Original CartonID</label>
+						  <input type="text" class="form-control" id="sCartonID" readonly>
+						</div>
+						<div class="col-md-4 mb-3">
+						  <label for="sNewCartonID">New CartonID</label>
+						  <input type="text" class="form-control" id="sNewCartonID" required>
+						</div>
+						<div class="col-md-4 mb-3">
+						  <label for="sLine">Carton Line</label>
+						  <input type="text" class="form-control" id="sLine" required>
+						</div>
+				  </div>
+				  <br />
+				  <div class="row">
+					  <div id="sModalFb" style="color:red"></div>
+				  </div>
+             </div>
+             <div class="modal-footer">
+                 <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancel</button>
+                 <button class="btn btn-primary btn-sm" type="button" id="btnReprint">Print</button>
+             </div>
+         </div>
+     </div>
+</div>
+
+<script type="text/javascript">
+	var oTable;
+	$(document).ready(function() {
+        oTable = $('#Tray-datatable').DataTable({
+        	"order": [[0, "desc"]],
+            "paging": true,
+            "pageLength": 10,
+            "processing": true,
+            "serverSide": true,
+            'ajax': {
+                'type': 'POST',
+                'url': '/API/DTGetTrayList'
+            },
+            'columns':
+                [
+				{ 'data': 'Collection_Point_Ref'},
+                { 'data': 'Collection_Point'},
+                { 'data': 'Status'},
+                { 'data': 'Production_Batch'},
+                { 'data': 'File_No'}
+                ],
+            	"columnDefs": [
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 4
+                }
+            ]
+		});
+	});
+
+</script>

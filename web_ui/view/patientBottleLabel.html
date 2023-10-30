@@ -1,0 +1,174 @@
+<div class="page-title">
+    <div class="title_left">
+      <h3>PATIENT BOTTLE LABEL</h3>
+    </div>
+  </div>
+  
+  <div class="clearfix"></div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2><small>Detail records for bottle label</small></h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <table width="100%" id="batch-detail-datatable" class="table table-striped jambo_table table-bordered nowrap">
+              <thead>
+                  <tr>
+					<th>Patient_Name</th>
+                    <th>ID_Number</th>
+					<th>Clinic_File_No</th>
+					<th>Collection_Date</th>
+					<th>Next_Collection_Date</th>
+					<th>Client_Name</th>
+					<th>Client_Address</th>
+					<th>Parcel_Ref</th>
+					<th></th>
+                  </tr>
+              </thead>
+              <tbody>
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+   </div>
+
+   <div id="EditRdtModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="text-center">Carton Labeling</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-4 mb-3">
+					  <label for="Patient_Name">Patient_Name</label>
+					  <input type="text" class="form-control" id="Patient_Name" readonly>
+					</div>
+				  </div>
+
+			    <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="ID_Number">ID_Number</label>
+				  <input type="text" class="form-control" id="ID_Number" readonly>
+				</div>
+			  </div>
+			  	
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Clinic_File_No">Clinic_File_No</label>
+				  <input type="text" class="form-control" id="Clinic_File_No" readonly>
+				</div>
+			  </div>
+
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Collection_Date">Collection_Date</label>
+				  <input type="text" class="form-control" id="Collection_Date" readonly>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Next_Collection_Date">Next_Collection_Date</label>
+				  <input type="text" class="form-control" id="Next_Collection_Date" readonly>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Client_Name">Client_Name</label>
+				  <input type="text" class="form-control" id="Client_Name" readonly>
+				</div>
+			  </div>
+
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Client_Address">Client_Address</label>
+				  <input type="text" class="form-control" id="Client_Address" readonly>
+				</div>
+			  </div>
+
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Parcel_Ref">Parcel_Ref</label>
+				  <input type="text" class="form-control" id="Parcel_Ref" readonly>
+				</div>
+			  </div>			 
+			</div>
+			<div class="modal-footer">
+				<div class="row">
+					<div class="col-md-12">
+						<button type="button" class="btn btn-info btn-md" id="ModifyReprintBottle" >Print Bottle Label</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+  
+  <script type="text/javascript">
+      var oTable;
+      $(document).ready(function() {
+          let MyId = '{{Filter}}';
+          var Url = '/API/DtGetBottleLabel';
+          if(MyId){
+               Url += '?id=' + MyId;
+          }
+          oTable = $('#batch-detail-datatable').DataTable({
+              "order": [[0, "asc"]],
+              "paging": true,
+              "pageLength": 10,
+              "processing": true,
+              "serverSide": true,
+              'ajax': {
+                  'type': 'POST',
+                  'url': '/API/DtGetBottleLabel',
+              },
+              'columns':
+                  [
+                  {'data': 'Patient_Name'},
+                  {'data': 'ID_Number'},
+                  {'data': 'File_No'},
+                  {'data': 'Collection_Date'},
+                  { 'data': 'Next_Collection_Date'},
+				  {'data': 'Client_Name'},
+                  {'data': 'Client_Address'},
+                  {'data': 'Parcel_Ref'},
+				{'data': 'StatReprint', 'render': AddButton}
+              ]
+          })
+      });
+  
+	  var AddButton = function (data, type, full, meta) {
+    	var Render = '';
+		if(data){
+			var dataID =  full.Patient_Name+'|'+ full.ID_Number+'|'+full.File_No+'|'+ full.Collection_Date+'|'+full.Next_Collection_Date+'|'+full.Client_Name+'|'+full.Client_Address+'|'+full.Parcel_Ref;
+			
+			Render += '&nbsp;&nbsp;';
+			Render += '<a class="open-Print btn btn-info btn-xs" role="button" data-toggle="modal" data-target="#EditRdtModal" data-id="' + dataID + '">Print</a>';
+		    }
+
+        return Render;
+    }
+
+	$(document).on("click", ".open-Print", function () {
+		var MyData = $(this).data('id');
+        var Myobj = MyData.split("|");
+		
+		  
+		$('#Patient_Name').val(Myobj[0]);
+		$('#ID_Number').val(Myobj[1]);
+		$('#Clinic_File_No').val(Myobj[2]);
+		$('#Collection_Date').val(Myobj[3]);
+		$('#Next_Collection_Date').val(Myobj[4]);
+		$('#Client_Name').val(Myobj[5]);
+		$('#Client_Address').val(Myobj[6]);
+		$('#Parcel_Ref').val(Myobj[7]);
+    });
+      
+
+  </script>
+  

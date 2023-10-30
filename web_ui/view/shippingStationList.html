@@ -1,0 +1,406 @@
+<div class="page-title">
+	<div class="title_left">
+	  <h3>PACKING STATION LIST</h3>
+	</div>
+  </div>
+  
+  <div class="clearfix"></div>
+  {{#Granted}}
+  <div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+	  <div class="x_panel">
+		<div class="x_title">
+		  <h2><small>Configured Stations</small></h2>
+		  <div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+		  <table width="100%" id="list-datatable" class="table table-striped jambo_table table-bordered nowrap">
+			  <thead>
+				  <tr>
+					  <th>Shipping_Station_IP</th>
+					  <th>Shipping_Station_ID</th>
+					  <th>Label_Printer</th>
+					  <th>ActivePWaybill</th>
+					  <th></th>
+				  </tr>
+			  </thead>
+			  <tbody>
+			  </tbody>
+		  </table>
+		</div>
+	  </div>
+	  {{#ManageShippingStation}}
+	  <button type="button" class="open-AddStn btn btn-info btn-md" data-toggle="modal" data-target="#AddStnModal">Create New Station</button>
+	   {{/ManageShippingStation}}
+	</div>
+   </div>
+   {{/Granted}}
+   {{^Granted}}
+   <div class="row">
+	  <div class="jumbotron">
+		  <div class="col-sm-12">
+			  <div style="text-align:center;"><h4 class="text-danger"><b>USER NOT AUTHORISED</b></h4></div>
+		  </div>
+	  </div>
+   </div>
+   {{/Granted}}
+  
+   <div id="AddStnModal" class="modal fade" role="dialog">
+	   <div class="modal-dialog">
+		   <div class="modal-content">
+			   <div class="modal-header">
+				   <button type="button" class="close" data-dismiss="modal">&times;</button>
+				   <h4 class="text-center">Add New Shipping Station</h4>
+			   </div>
+			   <div class="modal-body">
+				 <div class="row">
+				   <div class="col-md-12 mb-3">
+					 <label for="IpAddress">Shipping_Station_IP</label>
+					 <input type="text" class="form-control" id="IpAddress">
+				   </div>
+				 </div>
+				 <br />
+				 <div class="row">
+				   <div class="col-md-8 mb-3">
+					 <label for="StnNo">Shipping_Station_ID</label>
+					 <input type="text" class="form-control" id="StnNo">
+				   </div>
+				 </div>
+				 <br />
+				 <div class="row">
+				   <div class="col-md-8 mb-3">
+					  <div class="form-group">
+						<label for="Printer">Label_Printer</label>
+						<select class="form-control" id="Printer">
+							<option>Document Printer</option>
+							<option>Label Printer</option>
+						</select>
+					  </div>
+				   </div>
+				 </div>
+			   </div>
+			   <div class="modal-footer">
+				   <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancel</button>
+				   <button type="button" class="btn btn-info btn-sm" id="CreateStn" >Create</button>
+			   </div>
+		   </div>
+	   </div>
+  </div>
+  
+  <div class="modal fade" id="StnRemoveModal" tabindex="-1" role="dialog">
+	  <div class="modal-dialog">
+		  <div class="modal-content">
+			  <div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				  <h4 class="text-center">Delete Station</h4>
+			  </div>
+  
+			  <input type = "hidden" id="RemoveStnNo" value="">
+			  <input type = "hidden" id="RemoveStnIp" value="">
+  
+			  <div class="modal-body" id="ModalRemoveStnBody"></div>
+			  <div class="modal-footer">
+				  <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancel</button>
+				  <button class="btn btn-primary btn-sm" type="button" id="btnStnRemove">Delete</button>
+			  </div>
+		  </div>
+	  </div>
+  </div>
+  
+  <div id="EditStnModal" class="modal fade" role="dialog">
+	  <div class="modal-dialog">
+		  <div class="modal-content">
+			  <div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				  <h4 class="text-center">Update Station</h4>
+			  </div>
+			  <div class="modal-body">
+				<div class="row">
+				  <div class="col-md-4 mb-3">
+					<label for="eIpAddress">Shipping_Station_IP</label>
+					<input type="text" class="form-control" id="eIpAddress">
+				  </div>
+				</div>
+				<br />
+				<div class="row">
+				  <div class="col-md-4 mb-3">
+					<label for="eStnNumber">Shipping_Station_ID</label>
+					<input type="text" class="form-control" id="eStnNumber" readonly>
+				  </div>
+				</div>
+				<br />
+				 <div class="row">
+				   <div class="col-md-8 mb-3">
+					  <div class="form-group">
+						<label for="ePrinter">Label_Printer</label>
+						<select class="form-control" id="ePrinter">
+						</select>
+					  </div>
+				   </div>
+				 </div>
+			  </div>
+			  <div class="modal-footer">
+				  <div class="row">
+					  <div class="col-md-12">
+						  <button type="button" class="btn btn-info btn-md" id="ModifyStn" >Update</button>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+	  </div>
+  </div>
+  
+  <script type="text/javascript">
+	
+	  var oTable;
+	  $(document).ready(function() {
+		  oTable = $('#list-datatable').DataTable({
+			  "order": [[0, "asc"]],
+			  "paging": true,
+			  "pageLength": 10,
+			  "processing": true,
+			  "serverSide": true,
+			  'ajax': {
+				  'type': 'POST',
+				  'url': '/API/DTGetShippingStationList'
+			  },
+			  'columns':[
+				  { 'data': 'Shipping_Station_IP'},
+				  { 'data': 'Shipping_Station_ID'},
+				  { 'data': 'Label_Printer'},
+				  { 'data': 'ActiveWaybill'},
+				  { 'data': 'CanDelete', 'render': AddButton}
+			  ],
+				  "columnDefs": [
+				  {
+					  "searchable": false,
+					  "orderable": false,
+					  "targets": 4
+				  }
+			  ]
+		  });
+  
+		  $('#AddStnModal').on('shown.bs.modal', function () {
+			  $('#IpAddress').focus();
+		  });
+	  });
+  
+  var AddButton = function (data, type, full, meta) {
+		  var Render = '';
+		  if(data && !full.ActiveWaybill ){
+			  var dataID = full.Shipping_Station_ID + '|' + full.Shipping_Station_IP;
+			  Render = '<a class="open-DeleteStn btn btn-danger btn-xs" role="button" data-toggle="modal" data-target="#StnRemoveModal" data-id="' + dataID + '">Delete</a>';
+		  }
+  
+		  if(data){
+			  var dataID = full.Shipping_Station_ID + '|' + full.Shipping_Station_IP;
+			  Render += '&nbsp;&nbsp;';
+			  Render += '<a class="open-EditStn btn btn-info btn-xs" role="button" data-toggle="modal" data-target="#EditStnModal" data-id="' + dataID + '">Edit Station</a>';
+		  }
+  
+		  return Render;
+	  }
+
+	  $(document).on("click", ".open-DeleteStn", function () {
+		  var MyData = $(this).data('id');
+		  var Myobj = MyData.split("|");
+		  $(".modal-content #RemoveStnNo").val(Myobj[0]);
+		  $(".modal-content #RemoveStnIp").val(Myobj[1]);
+		  $("#ModalRemoveStnBody").text('Select "Remove" below to delete station ' + Myobj[0] + ' from the system. ');
+	  });
+
+	  $(function(){
+		  $('input#IpAddress').on({
+			  keydown: function(e){
+				  if(e.which === 32)
+					  return false;
+			  },
+			  change: function(){
+				  this.value = this.value.replace(/\s/g, '');
+			  }
+		  });
+	  });
+  
+	  $(document).on("click", "#btnStnRemove", function () {
+		  var StnNo = $("#RemoveStnNo").val();
+		  var StnIp = $("#RemoveStnIp").val();
+		  $.ajax({
+			  type: "GET",
+			  url: '/API/deleteShippingStation?stn=' + StnNo
+		  })
+		  .done(function (data) {
+			  if(!data.Success){
+				  if(data.Err){
+					  alert(data.Err);
+				  } else {
+					  location.reload(true);
+				  }
+			  } else {
+				  $('#StnRemoveModal').modal('toggle');
+				  oTable.ajax.reload();
+			  }
+		  });
+		  return false;
+	  });
+  
+	  $(document).on("click", ".open-EditStn", function () {
+		  var MyData = $(this).data('id');
+		  var Myobj = MyData.split("|");
+  
+		  $('#eIpAddress').val(Myobj[1]);
+		  $('#eStnNumber').val(Myobj[0]);
+  
+		  let PrnType = 'Document Printer';
+  
+		  $.ajax({
+			  type: "GET",
+			  url: '/API/getPrinterByType?id=' + PrnType
+		  })
+		  .done(function (data) {
+			  if(!data.Success){
+				  if(data.Err){
+					  alert(data.Err);
+				  }
+			  } else {
+				  $("#ePrinter").empty();
+				  let x = 0;
+  
+				  if(data.Prn){
+					  while(x < data.Prn.length){
+						  var El = '<option value="' + data.Prn[x].PrinterName + '">' + data.Prn[x].PrinterName + '</option>';
+  
+						  $("#ePrinter").append(El);
+						  x++;
+					  }
+				  }
+			  }
+		  });
+	  });
+  
+	  $(document).on("click", ".open-AddStn", function () {
+		  $('#IpAddress').val('');
+		  $('#StnNo').val('');
+		  $('#IpAddress').focus();
+  
+		  let PrnType = 'Document Printer';
+  
+		  $.ajax({
+			  type: "GET",
+			  url: '/API/getPrinterByType?id=' + PrnType
+		  })
+		  .done(function (data) {
+			  if(!data.Success){
+				  if(data.Err){
+					  alert(data.Err);
+				  }
+			  } else {
+				  $("#Printer").empty();
+				  let x = 0;
+  
+				  if(data.Prn){
+					  while(x < data.Prn.length){
+						  var El = '<option value="' + data.Prn[x].PrinterName + '">' + data.Prn[x].PrinterName + '</option>';
+  
+						  $("#Printer").append(El);
+						  x++;
+					  }
+				  }
+			  }
+		  });
+	  });
+  
+	  $(document).on("click", "#CreateStn", function () {
+		  let AllGood = true;
+		  var obj = {};
+  
+		  let IpAddress = $("#IpAddress" ).val();
+		  let StnNo = $("#StnNo" ).val();
+		  let Printer = $("#Printer" ).val();
+  
+		  if(IpAddress){
+			  if(StnNo){
+				  if(Printer){
+					  obj.IpAddress = IpAddress;
+					  obj.StnNo = StnNo;
+					  obj.Printer = Printer;
+  
+					  $.ajax({
+						  type: "POST",
+						  url: '/API/addShippingStation',
+						  data: JSON.stringify(obj),
+						  dataType: "json",
+						  contentType: "application/json; charset=utf-8",
+					  })
+					  .done(function (data) {
+						  if(!data.Success){
+							  if(data.Err){
+								  alert(data.Err);
+							  } else {
+								  location.reload(true);
+							  }
+						  } else {
+							  $('#AddStnModal').modal('toggle');
+							  oTable.ajax.reload();
+						  }
+					  });
+				  } else {
+					  alert("Cannot Create a Station without a printer");
+				  }
+			  } else {
+				  alert("Enter Stn Number");
+			  }
+		  } else {
+			  alert("Enter IP Address");
+		  }
+  
+		  return false;
+	  });
+  
+	  $(document).on("click", "#ModifyStn", function () {
+		  let AllGood = true;
+		  var obj = {};
+  
+		  let IpAddress = $("#eIpAddress" ).val();
+		  let StnNo = $("#eStnNumber" ).val();
+		  let Printer = $("#ePrinter" ).val();
+  
+		  if(IpAddress){
+			  if(StnNo){
+				  if(Printer){
+					  obj.IpAddress = IpAddress;
+					  obj.StnNo = StnNo;
+					  obj.Printer = Printer;
+  
+					  $.ajax({
+						  type: "POST",
+						  url: '/API/editShippingStation',
+						  data: JSON.stringify(obj),
+						  dataType: "json",
+						  contentType: "application/json; charset=utf-8",
+					  })
+					  .done(function (data) {
+						  if(!data.Success){
+							  if(data.Err){
+								  alert(data.Err);
+							  } else {
+								  location.reload(true);
+							  }
+						  } else {
+							  $('#EditStnModal').modal('toggle');
+							  oTable.ajax.reload();
+						  }
+					  });
+				  } else {
+					  alert("Cannot Modify a Station without a printer");
+				  }
+			  } else {
+				  alert("Enter Stn Number");
+			  }
+		  } else {
+			  alert("Enter IP Address");
+		  }
+  
+		  return false;
+	  });
+  </script>
+  

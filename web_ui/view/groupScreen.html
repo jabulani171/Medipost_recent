@@ -1,0 +1,296 @@
+<style>
+.columns {
+  columns: 4;
+}
+</style>
+
+<div class="page-title">
+  <div class="title_left">
+	<h3>USER GROUPS</h3>
+  </div>
+</div>
+
+<div class="clearfix"></div>
+{{#Granted}}
+<div class="row">
+	<div class="" role="tabpanel" data-example-id="togglable-tabs">
+		  <ul id="myTab1" class="nav nav-tabs bar_tabs right" role="tablist">
+		  		{{#UserGroups}}
+				<li role="presentation" class="{{Active}}" id="li-{{GroupName}}"><a id="home-tab-{{GroupName}}" data-toggle="tab" role="tab" aria-controls="{{GroupName}}" aria-expanded="{{Expanded}}" style="color:{{Color}}"><b>{{GroupName}}</b></a></li>
+				{{/UserGroups}}
+		  </ul>
+		  <div id="myTabContent2" class="tab-content">
+				<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+					<div class="col-sm-12">
+						<div class="panel panel-primary">
+							<div class="panel-body">
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<div style="text-align:center;"><h6 class="text-warning"><b>GROUP FUNCTIONS</b></h6></div>
+										<hr />
+										<form id="GrpFuncForm" class="form">
+										</form>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-body">
+										<div style="text-align:center;"><h6 class="text-warning"><b>USERS IN GROUP</b></h6></div>
+										<hr />
+										<form id="GrpUsersForm" class="form">
+										</form>
+									</div>
+									<div class="panel-footer">
+										<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#AddUTGModal">Add User To Group</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+		  </div>
+	</div>
+</div>
+{{/Granted}}
+{{^Granted}}
+<div class="row">
+	<div class="jumbotron">
+		<div class="col-sm-12">
+			<div style="text-align:center;"><h4 class="text-danger"><b>USER NOT AUTHERISED</b></h4></div>
+		</div>
+	</div>
+</div>
+{{/Granted}}
+<div id="AddUTGModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="text-center">Add User To Group</h4>
+			</div>
+			<form class="form">
+				<div class="modal-body">
+					<fieldset >
+					  <label for="selusers">Select One Or More Users:</label>
+					  <select multiple class="form-control" id="selusers" name="selusers" required>
+					  </select>
+					</fieldset>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-info btn-md" id="btnAddUserToGroup">Add</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		 var FirstTab = $('#myTab1 li:first');
+		 var Id = FirstTab.text();
+		 DrawFunc(FirstTab, Id);
+
+		 $("#myTab1 li").on("click", function () {
+		 	var MyNavTab = this;
+		 	var MyId = $('a', this).text();
+
+		 	DrawFunc(MyNavTab, MyId);
+		 });
+
+		 $(document).on("click", ".check-user-selection", function () {
+		 	var AnyChecked = false;
+		 	var User = this;
+			var UsersInGroup = $(".check-user-selection");
+			var Count = $(".check-user-selection").length;
+
+			var x = 0;
+			while(x < Count){
+				if(UsersInGroup[x].checked){
+					AnyChecked = true;
+				}
+				x++;
+			}
+
+			$("#RemUsersGrp").remove();
+			if(AnyChecked){
+				var El = '<a class="btn btn-info btn-md pull-right" id="RemUsersGrp">Remove Users From Group</a>';
+				$("#GrpUsersForm").append(El);
+			}
+		 });
+
+		 $(document).on("click", ".check-func-selection", function () {
+		 	var Func = this;
+		 	var Name = Func.name;
+		 	var Group = Func.value;
+		 	var Value = Func.checked;
+
+		 	let obj = {};
+		 	obj.Function = Name;
+		 	obj.Group = Group;
+		 	obj.Selected = Value;
+
+			$.ajax({
+				type: 'POST',
+				url: '/API/groupFuncUpdate',
+				data: JSON.stringify(obj),
+				dataType: "json",
+				contentType: "application/json; charset=utf-8",
+			}).done(function (data) {
+				if(!data.Success){
+					if(data.Err){
+						alert(data.Err);
+					} else {
+						location.reload(true);
+					}
+				}
+			});
+		 });
+
+		 $(document).on("click", "#RemUsersGrp", function () {
+			var UsersInGroup = $(".check-user-selection");
+			var Count = $(".check-user-selection").length;
+			var UsrArr = [];
+
+			var x = 0;
+			while(x < Count){
+				if(UsersInGroup[x].checked){
+					UsrArr.push(UsersInGroup[x].name);
+				}
+				x++;
+			}
+
+			if(Count > 0){
+				var Group = UsersInGroup[0].value;
+			}
+
+			if(UsrArr.length > 0){
+				let obj = {};
+				obj.Users = UsrArr;
+				obj.Group = Group;
+
+				$.ajax({
+					type: 'POST',
+					url: '/API/removeufg',
+					data: JSON.stringify(obj),
+					dataType: "json",
+					contentType: "application/json; charset=utf-8",
+				}).done(function (data) {
+					if(!data.Success){
+						if(data.Err){
+							alert(data.Err);
+						} else {
+							location.reload(true);
+						}
+					} else {
+						let MyId = 'li-' + Group;
+						let Tab = $('#myTab1 #' + MyId);
+						let TabId = Tab.text();
+						DrawFunc(Tab, TabId);
+					}
+				});
+			}
+		 });
+
+		 $(document).on("click", "#btnAddUserToGroup", function () {
+			var selected=[];
+			var Group = null;
+			$('#selusers :selected').each(function(){
+				 selected.push($(this).text());
+
+				 if(!Group){
+				 	Group = $(this).val();
+				 }
+			});
+
+			if(selected.length > 0){
+				let obj = {};
+				obj.NewUsers = selected;
+				obj.Group = Group;
+
+				$.ajax({
+					type: 'POST',
+					url: '/API/addutg',
+					data: JSON.stringify(obj),
+					dataType: "json",
+					contentType: "application/json; charset=utf-8",
+				}).done(function (data) {
+					if(!data.Success){
+						if(data.Err){
+							alert(data.Err);
+						} else {
+							location.reload(true);
+						}
+					} else {
+						$('#AddUTGModal').modal('toggle');
+						let MyId = 'li-' + Group;
+						let Tab = $('#myTab1 #' + MyId);
+						let TabId = Tab.text();
+						DrawFunc(Tab, TabId);
+					}
+				});
+			} else {
+				$('#AddUTGModal').modal('toggle');
+			}
+		 });
+
+		 function DrawFunc(MyNavTab, MyId){
+			$.ajax({
+			  type: 'GET',
+			  url: '/API/groupManQ?id=' + MyId
+			})
+			.done(function (data) {
+				if(!data.Success){
+					if(data.Err){
+						alert(data.Err);
+					} else {
+						location.reload(true);
+					}
+				} else {
+					$(MyNavTab).siblings().find('a').attr("style", "color: black");
+					$('a',MyNavTab).attr("style", "color: blue");
+
+					var GroupFunctions = data.GroupFunctions;
+					var UsersInGroup = data.UsersInGroup;
+					var AvailableUsers = data.AvailableUsers;
+
+					$("#GrpFuncForm").empty();
+					var x = 0;
+
+					if(GroupFunctions){
+						while(x < GroupFunctions.length){
+							var El = '<span class="checkbox-inline text-primary"><input name="' + GroupFunctions[x].FuncName + '" type="checkbox" class="check-func-selection" value="' + MyId + '" ' + GroupFunctions[x].Checked + '>' + GroupFunctions[x].FuncDesc + '</span>&nbsp;&nbsp;';
+
+							$("#GrpFuncForm").append(El);
+							x++;
+						}
+					}
+
+					$("#GrpUsersForm").empty();
+					x = 0;
+
+					if(UsersInGroup){
+						while(x < UsersInGroup.length){
+							var El = '<span class="checkbox-inline text-primary"><input name="' + UsersInGroup[x] + '" type="checkbox" value="' + MyId + '" class="check-user-selection">' + UsersInGroup[x] + '</span>&nbsp;&nbsp;';
+
+							$("#GrpUsersForm").append(El);
+							x++;
+						}
+
+						$("#GrpUsersForm").append("<hr />");
+					}
+
+					$("#selusers").empty();
+					x = 0;
+
+					if(AvailableUsers){
+						while(x < AvailableUsers.length){
+							var El = '<option value="' + MyId + '">' + AvailableUsers[x] + '</option>';
+
+							$("#selusers").append(El);
+							x++;
+						}
+					}
+				}
+			});
+		 }
+	});
+</script>

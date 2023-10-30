@@ -1,0 +1,30 @@
+.chartjs-render-monitor-pie{
+     display: block;
+	 width: 299px; 
+	 height: 200px;
+	 
+	
+}
+.chartjs-size-monitor{
+  position: absolute; 
+  left: 0px; 
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  overflow: hidden;
+  pointer-events: none;
+  visibility: hidden; 
+  z-index: -1;
+}
+.chartjs-render-monitor-bar{
+	display: block; 
+	width: 299px;
+	right:100px ;
+	height: 200px;
+	float: left;
+}
+.card-body{
+	height: 420px;
+	width: 420px;
+	float: left;
+}

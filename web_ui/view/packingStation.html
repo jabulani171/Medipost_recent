@@ -1,0 +1,111 @@
+<h1 class="text-center" ><b  class="text-danger">Packing Station {{Station}}</b></h1>
+
+  <div class="clearfix"></div>
+  {{#Granted}}
+  {{#Configured}}
+  <div class="row" id="StnScreen">
+	  <div class="col-lg-1"></div>
+	  <div class="col-lg-10">
+		  <div class="container">
+			  <div class="jumbotron">
+				   {{^DocumentView}}
+				  <div id="normal">
+
+					<div class="row">
+						<div class="col-lg-4"></div>
+						<div class="col-lg-4">
+							{{#PackingData}}
+						<div><h5 ><label></label>&nbsp;&nbsp;<label id="" class="text-primary">{{Packing_MSG}}</label></h5></div>
+						{{/PackingData}}	
+					</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-4"></div>
+						<div class="col-lg-4">
+							{{#ProductionData}}
+						<div><h3 ><label><b>Production Batch</b></label>&nbsp;&nbsp;<label id="CartonIdTag" class="text-primary">{{Production_Batch}}</label></h3></div>
+						{{/ProductionData}}	
+					</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-4"></div>
+						<div class="col-lg-4">
+							{{#PatientData}}
+						<div><h3 ><label><b>Patient</b></label>&nbsp;&nbsp;<label id="TrayIdTag" class="text-primary">{{Patient}}</label></h3></div>
+						{{/PatientData}}	
+					</div>
+					</div>
+				  </div>
+				  {{/DocumentView}}
+				  <div class="row">
+					  <div class="col-lg-12">
+						  <div style="text-align:center;"><h1 id="Message" style="color: red;">{{STN_MSG}}</h1></div>
+					  </div>
+				  </div>
+				  {{^Confirm}}
+				  <div class="row">
+					  <div class="col-lg-1"></div>
+					  <div class="col-lg-10">
+						{{#StnActionData}}
+						  <div style="text-align:center;"><h3 id="Heading" ><b>{{STN_ACTION}}</b></h3></div>
+						  {{/StnActionData}}
+					  </div>
+				  </div>
+				  <div class="row">
+					  <div class="col-lg-4"></div>
+					  <div class="col-lg-4">
+						{{#InputData}}
+						  <form action="/API/{{StnAction}}" method="post" enctype="multipart/form-data" id="myForm">
+							  <div style="text-align:center;"><input type="text" class="form-control form-control-lg" id="Input" name="Input" autofocus></div>
+						  </form>
+						  {{/InputData}}
+					  </div>
+				   </div>
+				   {{/Confirm}}
+				  <div class="row">
+					  <br/>
+					  <div class="col-lg-4">
+						  {{#Reset}}
+						  <a id="btnReset" class="btn btn-info btn-lg" href="/API/PackingStationReset" onclick="return confirm('Are you sure you want to reset?');">Reset</a>
+						   {{/Reset}}
+						</div>
+
+
+						<div class="col-lg-4">
+						   {{#Reprint}}
+						   <a id="btnReprint" class="btn btn-info btn-lg" href="/API/PackingStationReprintDoc" onclick="return confirm('Are you sure you want to reprint the document?');">Re-Print Document</a>
+						   {{/Reprint}}
+						</div>
+				   </div>
+			  </div>
+		  </div>
+	  </div>
+	  <div class="col-lg-1"></div>
+	  <input type="hidden" id="StnNo" name="StnNo" value="{{Station}}">
+	  <input type="hidden" id="StnAction" name="StnAction" value="{{StnAction}}">
+  </div>
+   {{/Configured}}
+   {{^Configured}}
+   <div class="row">
+	  <div class="jumbotron">
+		  <div class="col-sm-12">
+			  <div style="text-align:center;"><h3 class="text-danger"><b>STATION NOT CONFIGURED | IP [{{StnIP}}]</b></h3></div>
+		  </div>
+	  </div>
+   </div>
+   {{/Configured}}
+   {{/Granted}}
+   {{^Granted}}
+   <div class="row">
+	  <div class="jumbotron">
+		  <div class="col-sm-12">
+			  <div style="text-align:center;"><h3 class="text-danger"><b>USER NOT AUTHERISED</b></h3></div>
+		  </div>
+	  </div>
+   </div>
+   {{/Granted}}
+   <script>
+	 $('#myForm').submit(function() {
+		 $("#Input").prop('readonly', true);
+	 });
+   </script>

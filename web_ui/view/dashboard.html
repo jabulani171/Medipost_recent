@@ -1,0 +1,394 @@
+<style>
+table{
+    border: 1px solid black;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+th {
+	padding: 0px 0px 0px 5px;
+	background-color: #ccc;
+	border: 1px solid black;
+}
+td {
+	padding: 0px 0px 0px 5px;
+	border: 1px solid black;
+}
+tr:nth-child(even){
+	background-color: #ccc;
+}
+</style>
+
+<div class="page-title">
+  <div class="title_left">
+	<h3>Dashboard</h3>
+  </div>
+</div>
+
+  <div class="row">&nbsp</div>
+  <div class="row">
+    <div class="col-sm-6">
+        <div class="x_panel">
+		  <div class="x_title">
+			<small><b>Product Verification</b></small>
+			<div class="clearfix"></div>
+		  </div>
+		  <div class="x_content">
+		  	<div class="col-sm-6">
+		  	<small><b>Line 1 - History</b></small>
+			<table width="100%" id="ProdVerLine1-datatable" class="nowrap" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th>Barcode</th>
+						<th>Valid</th>
+						<th>Script</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+			<small><b>Line 1 Last Scanned:</b></small><div class="clearfix"></div>
+			<span class="badge badge-secondary" id="Line1ScannedItem">6164004683516</span>&nbsp&nbsp&nbsp&nbsp
+			<span class="badge badge-pill badge-success" id="GoodLine1">Good</span>&nbsp
+			<span class="badge badge-pill badge-danger" id="BadLine1">Fail</span>
+			</div>
+			<div class="col-sm-6">
+			<small><b>Line 2 - History</b></small>
+			<table width="100%" id="ProdVerLine2-datatable" class="nowrap" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th>Barcode</th>
+						<th>Valid</th>
+						<th>Script</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+			<small><b>Line 2 Last Scanned:</b></small><div class="clearfix"></div>
+			<span class="badge badge-secondary" id="Line1ScannedItem">6164004683516</span>&nbsp&nbsp&nbsp&nbsp
+			<span class="badge badge-pill badge-success" id="GoodLine2">Good</span>&nbsp
+			<span class="badge badge-pill badge-danger" id="BadLine2">Fail</span>
+			</div>
+		  </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="x_panel">
+		  <div class="x_title">
+			<small><b>Script Label Verification</b></small>
+			<div class="clearfix"></div>
+		  </div>
+		  <div class="x_content">
+		  	<div class="col-sm-6">
+		  	<small><b>Line 1 - History</b></small>
+			<table width="100%" id="ScriptLabelVerLine1-datatable" class="nowrap" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th>Scanned</th>
+						<th>Valid</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+			<small><b>Line 1 Last Scanned:</b></small><div class="clearfix"></div>
+			<span class="badge badge-secondary" id="ScriptLabelLine1ScannedItem">10135201;PDC32619545;PDC32619545</span>
+			<div class="clearfix"></div>
+			<div class="clearfix"></div>
+			<span class="badge badge-pill badge-success" id="GoodScriptLabelLine1">Good</span>
+			<span class="badge badge-pill badge-danger" id="BadScriptLabelLine1">Fail</span>
+			</div>
+			<div class="col-sm-6">
+			<small><b>Line 2 - History</b></small>
+			<table width="100%" id="ScriptLabelVerLine2-datatable" class="nowrap" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th>Scanned</th>
+						<th>Valid</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+			<small><b>Line 2 Last Scanned:</b></small><div class="clearfix"></div>
+			<span class="badge badge-secondary" id="ScriptLabelLine2ScannedItem">6164004683516</span>
+			<div class="clearfix"></div>
+			<div class="clearfix"></div>
+			<span class="badge badge-pill badge-success" id="GoodScriptLabelLine2">Good</span>
+			<span class="badge badge-pill badge-danger" id="BadScriptLabelLine2">Fail</span>
+			</div>
+		  </div>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+        <div class="x_panel">
+		  <div class="x_title">
+			<small><b>Bottle Script Verification</b></small>
+			<div class="clearfix"></div>
+		  </div>
+		  <div class="x_content">
+		  	<div class="col-sm-6">
+		  	<small><b>Line 1 - Bottle At Held Position</b></small>
+			<table width="100%" id="BotScriptVerLine1-datatable" class="nowrap" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th>Patient Id</th>
+						<th>Script No</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+			<small><b>Line 1 Bottle Script Scan:</b></small><div class="clearfix"></div>
+			<span class="badge badge-secondary" id="Line1BotScriptScannedItem">PDC25479033</span>&nbsp&nbsp&nbsp&nbsp
+			<span class="badge badge-pill badge-success" id="GoodBotLine1">Match</span>&nbsp
+			<span class="badge badge-pill badge-danger" id="BadBotLine1">Fail</span>
+			</div>
+			<div class="col-sm-6">
+			<small><b>Line 2 - Bottle At Held Position</b></small>
+			<table width="100%" id="BotScriptVerLine2-datatable" class="nowrap" cellspacing="0" cellpadding="0">
+				<thead>
+					<tr>
+						<th>Patient Id</th>
+						<th>Script No</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+			<br/>
+			<small><b>Line 2 Bottle Script Scan:</b></small><div class="clearfix"></div>
+			<span class="badge badge-secondary" id="Line2BotScriptScannedItem">PDC32619545</span>&nbsp&nbsp&nbsp&nbsp
+			<span class="badge badge-pill badge-success" id="GoodBotLine2">Match</span>&nbsp
+			<span class="badge badge-pill badge-danger" id="BadBotLine2">Fail</span>
+			</div>
+		  </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+		<div class="x_panel">
+		  <div class="x_title">
+			<small><b>Despatch Carton Verification</b></small>
+			<div class="clearfix"></div>
+		  </div>
+		  <div class="x_content">
+		    <div class="col-sm-12">
+				<table width="100%" id="DespatchCarton-datatable" class="nowrap" cellspacing="0" cellpadding="0">
+					<thead>
+						<tr>
+							<th>Carton</th>
+							<th>Valid</th>
+							<th>Parcel Reference</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<br/>
+				<small><b>Despatch Carton Scan:</b></small><div class="clearfix"></div>
+				<span class="badge badge-secondary" id="DespatchCartonScannedItem">10135201</span>&nbsp&nbsp&nbsp&nbsp
+				<span class="badge badge-pill badge-success" id="GoodDespatchCarton">Good</span>&nbsp
+				<span class="badge badge-pill badge-danger" id="BadDespatchCarton">Fail</span>
+			</div>
+		  </div>
+		</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+		<div class="x_panel">
+		  <div class="x_title">
+			<small><b>Empty Carton Verification</b></small>
+			<div class="clearfix"></div>
+		  </div>
+		  <div class="x_content">
+			<div class="col-sm-6">
+				<small><b>Line 1 - History</b></small>
+				<table width="100%" id="CartonLine1-datatable" class="nowrap" cellspacing="0" cellpadding="0">
+					<thead>
+						<tr>
+							<th>Carton</th>
+							<th>Valid</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<br/>
+				<small><b>Line 1 Carton Scan:</b></small><div class="clearfix"></div>
+				<span class="badge badge-secondary" id="Line1CartonScannedItem">10135201</span>&nbsp&nbsp&nbsp&nbsp
+				<span class="badge badge-pill badge-success" id="GoodCartonLine1">Good</span>&nbsp
+				<span class="badge badge-pill badge-danger" id="BadCartonLine1">Fail</span>
+			</div>
+			<div class="col-sm-6">
+				<small><b>Line 2 - History</b></small>
+				<table width="100%" id="CartonLine2-datatable" class="nowrap" cellspacing="0" cellpadding="0">
+					<thead>
+						<tr>
+							<th>Carton</th>
+							<th>Valid</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<br/>
+				<small><b>Line 2 Carton Scan:</b></small><div class="clearfix"></div>
+				<span class="badge badge-secondary" id="Line2CartonScannedItem">10135202</span>&nbsp&nbsp&nbsp&nbsp
+				<span class="badge badge-pill badge-success" id="GoodCartonLine2">Good</span>&nbsp
+				<span class="badge badge-pill badge-danger" id="BadCartonLine2">Fail</span>
+			</div>
+		</div>
+	</div>
+  </div>
+	<div class="col-sm-6">
+		<div class="x_panel">
+		  <div class="x_title">
+			<small><b>Despatch Label Verification</b></small>
+			<div class="clearfix"></div>
+		  </div>
+		  <div class="x_content">
+			<div class="col-sm-12">
+				<table width="100%" id="DespatchLabel-datatable" class="nowrap" cellspacing="0" cellpadding="0">
+					<thead>
+						<tr>
+							<th>Scanned</th>
+							<th>Valid</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<br/>
+				<small><b>Despatch Label Scan:</b></small><div class="clearfix"></div>
+				<span class="badge badge-secondary" id="DespatchLabelScannedItem">10135201</span>&nbsp&nbsp&nbsp&nbsp
+				<span class="badge badge-pill badge-success" id="GoodDespatchLabel">Good</span>&nbsp
+				<span class="badge badge-pill badge-danger" id="BadDespatchLabel">Fail</span>
+			</div>
+		  </div>
+		</div>
+	</div>
+
+<script type="text/javascript">
+
+</script>

@@ -1,0 +1,1 @@
+pm2 start socket_io_ui.js --name SOCKET_IO --node-args="--no-warnings"

@@ -1,0 +1,60 @@
+<div class="page-title">
+    <div class="title_left">
+      <h3>ROLES SETUP</h3>
+    </div>
+  </div>
+  
+  <div class="clearfix"></div>
+  
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2><small>Roles Setup with the system</small></h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <div class="table-responsive panel">
+              <table width="100%" id="utllist-table" class="table table-striped jambo_table table-bordered nowrap">
+                  <thead>
+                      <tr>
+                          <th>TransactionID</th>
+                          <th>Date</th>
+                          <th>Logged By</th>
+                          <th>PluginID</th>
+                          <th>Msg</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+              </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script type="text/javascript">
+      var oTable;
+      $(document).ready(function(){
+          oTable = $('#utllist-table').DataTable({
+              "scrollX" : true,
+              "order": [[1, "desc"]],
+              "paging": true,
+              "pageLength": 10,
+              "processing": true,
+              "serverSide": true,
+              'ajax': {
+                  'type': 'POST',
+                  'url': '/API/DTGetRolesSetup'
+              },
+              'columns':[
+                  { 'data': 'TransactionID' },
+                  { 'data': 'CreateDate' },
+                  { 'data': 'UserID'},
+                  { 'data': 'PluginID'},
+                  { 'data': 'Log'}
+              ]
+          });
+      });
+  </script>

@@ -1,0 +1,410 @@
+<div class="page-title">
+  <div class="title_left">
+	<h3>USER LIST</h3>
+  </div>
+</div>
+
+<div class="clearfix"></div>
+{{#Granted}}
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="x_panel">
+	  <div class="x_title">
+		<h2><small>Users in the system</small></h2>
+		<div class="clearfix"></div>
+	  </div>
+	  <div class="x_content">
+		<table width="100%" id="user-datatable" class="table table-striped jambo_table table-bordered nowrap">
+			<thead>
+				<tr>
+					<th>UserId</th>
+					<th>FirstName</th>
+					<th>LastName</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	  </div>
+	</div>
+	<button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#AddUserModal">Add User</button>
+  </div>
+ </div>
+ {{/Granted}}
+ {{^Granted}}
+ <div class="row">
+	<div class="jumbotron">
+		<div class="col-sm-12">
+			<div style="text-align:center;"><h4 class="text-danger"><b>USER NOT AUTHERISED</b></h4></div>
+		</div>
+	</div>
+ </div>
+ {{/Granted}}
+
+<div class="modal fade" id="UserRemoveModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="text-center">Remove User</h4>
+			</div>
+
+            <input type = "hidden" id="RemoveUserID" value="">
+
+            <div class="modal-body" id="ModalRemoveUserBody"></div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary btn-sm" type="button" id="btnUserRemove">Remove</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="AddUserModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="text-center">Adding a new user</h4>
+			</div>
+			<div class="modal-body">
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="uid">Username</label>
+				  <input type="text" class="form-control" id="uid" required>
+				</div>
+				<div class="col-md-4 mb-3">
+				  <label for="firstname">First name</label>
+				  <input type="text" class="form-control" id="firstname" required>
+				</div>
+				<div class="col-md-4 mb-3">
+				  <label for="lastname">Last name</label>
+				  <input type="text" class="form-control" id="lastname" required>
+				</div>
+			  </div>
+			  <br />
+			  <div class="row">
+				<div class="col-md-6 mb-3">
+				  <label for="psw">Password</label>
+				  <input type="password" class="form-control" id="psw" required>
+				</div>
+				<div class="col-md-6 mb-3">
+				  <label for="vpsw">Confirm Password</label>
+				  <input type="password" class="form-control" id="vpsw" required>
+				</div>
+			  </div>
+			  <br />
+			  <div class="row">
+			  	<div class="col-md-2 mb-3"></div>
+			  	<div class="col-md-8 mb-3">
+					<div id="ModalFb" style="color:red"></div>
+				</div>
+				<div class="col-md-2 mb-3"></div>
+			  </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info btn-md" id="CreateUser" >Create</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="EditUserModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="text-center">Update User</h4>
+			</div>
+			<form class="form" action="/API/updateUser" method="post" enctype="multipart/form-data">
+				<div class="modal-body">
+				  <div class="row">
+					<div class="col-md-4 mb-3">
+					  <label for="euid">Username</label>
+					  <input type="text" class="form-control" id="euid" readonly>
+					</div>
+					<div class="col-md-4 mb-3">
+					  <label for="efirstname">First name</label>
+					  <input type="text" class="form-control" id="efirstname" required>
+					</div>
+					<div class="col-md-4 mb-3">
+					  <label for="elastname">Last name</label>
+					  <input type="text" class="form-control" id="elastname" required>
+					</div>
+				  </div>
+				  <br />
+				  <div class="row">
+					<div class="col-md-6 mb-3">
+					  <label for="epsw">Password</label>
+					  <input type="password" class="form-control" id="epsw" required>
+					</div>
+					<div class="col-md-6 mb-3">
+					  <label for="evpsw">Confirm Password</label>
+					  <input type="password" class="form-control" id="evpsw" required>
+					</div>
+				  </div>
+				  <br />
+				  <div class="row">
+					<div class="col-md-2 mb-3"></div>
+					<div class="col-md-8 mb-3">
+						<div id="eModalFb" style="color:red"></div>
+					</div>
+					<div class="col-md-2 mb-3"></div>
+				  </div>
+				</div>
+				<div class="modal-footer">
+					<div class="row">
+						<div class="col-md-12">
+							<button type="button" class="btn btn-info btn-md" id="ModifyUser" >Update</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	var oTable;
+	$(document).ready(function() {
+        oTable = $('#user-datatable').DataTable({
+        	"order": [[0, "asc"]],
+            "paging": true,
+            "pageLength": 10,
+            "processing": true,
+            "serverSide": true,
+            'ajax': {
+                'type': 'POST',
+                'url': '/API/DTGetSysUsers'
+            },
+            'columns':
+                [
+                { 'data': 'UserID', "defaultContent": "", 'name': 'UserID' },
+                { 'data': 'FirstName', "defaultContent": "", 'name': 'FirstName' },
+                { 'data': 'LastName', "defaultContent": "", 'name': 'LastName' },
+                { 'data': 'CanDelete', "render": AddButton },
+                ],
+            	"columnDefs": [
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 3
+                }
+            ]
+		});
+
+		$('#AddUserModal').on('shown.bs.modal', function () {
+			$('#uid').focus();
+			$("#ModalFb").text('');
+		});
+
+		$("#AddUserModal").on('hide.bs.modal', function () {
+			$('#uid').val('');
+			$('#firstname').val('');
+			$('#lastname').val('');
+			$('#psw').val('');
+			$('#vpsw').val('');
+			$("#ModalFb").text('');
+		});
+
+		$('#uid, #firstname, #lastname, #psw, #vpsw').focus(function () {
+			$("#ModalFb").text('');
+		});
+
+		$('#EditUserModal').on('shown.bs.modal', function () {
+			$('#efirstname').focus();
+			$("#eModalFb").text('');
+		});
+
+		$("#EditUserModal").on('hide.bs.modal', function () {
+			$('#euid').val('');
+			$('#efirstname').val('');
+			$('#elastname').val('');
+			$('#epsw').val('');
+			$('#evpsw').val('');
+			$("#eModalFb").text('');
+		});
+
+		$('#efirstname, #elastname, #epsw, #evpsw').focus(function () {
+			$("#eModalFb").text('');
+		});
+	});
+
+    var AddButton = function (data, type, full, meta) {
+    	var Render = '';
+        if(data){
+        	var dataID = full.UserID + '|' + full.FirstName + ' ' + full.LastName;
+        	Render = '<a class="open-DeleteUser btn btn-danger btn-xs" role="button" data-toggle="modal" data-target="#UserRemoveModal" data-id="' + dataID + '">Remove User</a>';
+        }
+
+        if(full.CanEdit){
+        	var dataID = full.UserID + '|' + full.FirstName + '|' + full.LastName;
+        	Render += '&nbsp;&nbsp;';
+        	Render += '<a class="open-EditUser btn btn-info btn-xs" role="button" data-toggle="modal" data-target="#EditUserModal" data-id="' + dataID + '">Edit User</a>';
+        }
+
+        return Render;
+    }
+
+    $(document).on("click", ".open-EditUser", function () {
+        var MyData = $(this).data('id');
+        var Myobj = MyData.split("|");
+        $("#euid").val(Myobj[0]);
+        $("#efirstname").val(Myobj[1]);
+		$("#elastname").val(Myobj[2]);
+    });
+
+    $(document).on("click", ".open-DeleteUser", function () {
+        var MyData = $(this).data('id');
+        var Myobj = MyData.split("|");
+        $(".modal-content #RemoveUserID").val(Myobj[0]);
+        $("#ModalRemoveUserBody").text('Select "Remove" below to remove delete user ' + Myobj[1] + ' from the system');
+    });
+
+    $(document).on("click", "#btnUserRemove", function () {
+        var ID = $("#RemoveUserID").val();
+        $.ajax({
+            type: "GET",
+            url: '/API/deleteUser?id=' + ID
+        })
+        .done(function (data) {
+        	if(!data.Success){
+        		location.reload(true);
+        	} else {
+        		$('#UserRemoveModal').modal('toggle');
+        		oTable.ajax.reload();
+        	}
+        });
+        return false;
+    });
+
+	$(document).on("click", "#CreateUser", function () {
+    	let AllGood = true;
+    	var obj = {};
+
+        obj.uid = $("#uid").val();
+        obj.firstname = $("#firstname").val();
+        obj.lastname = $("#lastname").val();
+        obj.psw = $("#psw").val();
+        obj.vpsw = $("#vpsw").val();
+
+        if(AllGood && !obj.uid){
+        	$("#ModalFb").text('Username is required');
+        	AllGood = false;
+       	}
+
+        if(AllGood && !obj.firstname){
+        	$("#ModalFb").text('FirstName is required');
+        	AllGood = false;
+       	}
+
+        if(AllGood && !obj.lastname){
+        	$("#ModalFb").text('LastName is required');
+        	AllGood = false;
+       	}
+
+        if(AllGood && !obj.psw){
+        	$("#ModalFb").text('Password is required');
+        	AllGood = false;
+       	}
+
+        if(AllGood && !obj.vpsw){
+        	$("#ModalFb").text('Confirmation Password is required');
+        	AllGood = false;
+       	}
+
+       	if(AllGood && obj.psw != obj.vpsw){
+        	$("#ModalFb").text('Password and Confirm Password mismatch');
+        	AllGood = false;
+       	}
+
+       	if(AllGood){
+			$.ajax({
+				type: "POST",
+				url: '/API/addUser',
+				data: JSON.stringify(obj),
+				dataType: "json",
+				contentType: "application/json; charset=utf-8",
+			})
+			.done(function (data) {
+				if(!data.Success){
+					if(data.Err){
+						alert(data.Err);
+					} else {
+						location.reload(true);
+					}
+				} else {
+					$('#AddUserModal').modal('toggle');
+					oTable.ajax.reload();
+				}
+			});
+        }
+
+        return false;
+    });
+
+	$(document).on("click", "#ModifyUser", function () {
+    	let AllGood = true;
+    	var obj = {};
+
+        obj.euid = $("#euid").val();
+        obj.efirstname = $("#efirstname").val();
+        obj.elastname = $("#elastname").val();
+        obj.epsw = $("#epsw").val();
+        obj.evpsw = $("#evpsw").val();
+
+        if(AllGood && !obj.euid){
+        	$("#eModalFb").text('Username is required');
+        	AllGood = false;
+       	}
+
+        if(AllGood && !obj.efirstname){
+        	$("#eModalFb").text('FirstName is required');
+        	AllGood = false;
+       	}
+
+        if(AllGood && !obj.elastname){
+        	$("#eModalFb").text('LastName is required');
+        	AllGood = false;
+       	}
+
+        if(AllGood && !obj.epsw){
+        	$("#eModalFb").text('Password is required');
+        	AllGood = false;
+       	}
+
+        if(AllGood && !obj.evpsw){
+        	$("#eModalFb").text('Confirmation Password is required');
+        	AllGood = false;
+       	}
+
+       	if(AllGood && obj.epsw != obj.evpsw){
+        	$("#eModalFb").text('Password and Confirm Password mismatch');
+        	AllGood = false;
+       	}
+
+       	if(AllGood){
+			$.ajax({
+				type: "POST",
+				url: '/API/updateUser',
+				data: JSON.stringify(obj),
+				dataType: "json",
+				contentType: "application/json; charset=utf-8",
+			})
+			.done(function (data) {
+				if(!data.Success){
+					if(data.Err){
+						alert(data.Err);
+					} else {
+						location.reload(true);
+					}
+				} else {
+					$('#EditUserModal').modal('toggle');
+					oTable.ajax.reload();
+				}
+			});
+        }
+
+        return false;
+    });
+</script>

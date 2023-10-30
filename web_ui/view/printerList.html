@@ -1,0 +1,264 @@
+<div class="page-title">
+    <div class="title_left">
+      <h3>PRINTER LIST</h3>
+    </div>
+  </div>
+  
+  <div class="clearfix"></div>
+  {{#Granted}}
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2><small>Configured Printers</small></h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <table width="100%" id="list-datatable" class="table table-striped jambo_table table-bordered nowrap">
+              <thead>
+                  <tr>
+                      <th>Printer Name</th>
+                      <th>Printer Queue</th>
+                      <th>Printer Type</th>
+                      <th>Description</th>
+                      <th>created_at</th>
+                      <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+              </tbody>
+          </table>
+        </div>
+      </div>
+      {{#ManagePrinters}}
+      <button type="button" class="open-AddPrinter btn btn-info btn-md" data-toggle="modal" data-target="#AddPrinterModal">Create New Printer</button>
+      {{/ManagePrinters}}
+    </div>
+   </div>
+   {{/Granted}}
+ {{^Granted}}
+   <div class="row">
+      <div class="jumbotron">
+          <div class="col-sm-12">
+              <div style="text-align:center;"><h4 class="text-danger"><b>USER NOT AUTHORISED</b></h4></div>
+          </div>
+      </div>
+   </div>
+   {{/Granted}}
+  
+   <div id="AddPrinterModal" class="modal fade" role="dialog">
+       <div class="modal-dialog">
+           <div class="modal-content">
+               <div class="modal-header">
+                   <button type="button" class="close" data-dismiss="modal">&times;</button>
+                   <h4 class="text-center">Add New Printer</h4>
+               </div>
+               <div class="modal-body">
+                 <div class="row">
+                   <div class="col-md-12 mb-3">
+                     <label for="PrinterName">Printer Name</label>
+                     <input type="text" class="form-control" id="PrinterName">
+                   </div>
+                 </div>
+                 <br />
+                 <div class="row">
+                   <div class="col-md-8 mb-3">
+                     <label for="PrinterQueue">Printer Queue</label>
+                     <input type="text" class="form-control" id="PrinterQueue">
+                   </div>
+                 </div>
+                 <br />
+                 <div class="row">
+                   <div class="col-md-8 mb-3">
+                     <label for="Description">Description</label>
+                     <input type="text" class="form-control" id="Description">
+                   </div>
+                 </div>
+                 <br />
+                 <div class="row">
+                   <div class="col-md-8 mb-3">
+                      <div class="form-group">
+                        <label for="PrinterType">Printer Type:</label>
+                        <select class="form-control" id="PrinterType">
+                          <option>Document Printer</option>
+                          <option>Label Printer</option>
+                        </select>
+                      </div>
+                   </div>
+                 </div>
+               </div>
+               <div class="modal-footer">
+                   <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancel</button>
+                   <button type="button" class="btn btn-info btn-sm" id="CreatePrinter" >Create</button>
+               </div>
+           </div>
+       </div>
+  </div>
+  
+  <div class="modal fade" id="PrinterRemoveModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="text-center">Delete Printer</h4>
+              </div>
+  
+              <input type = "hidden" id="RemovePrinterName" value="">
+  
+              <div class="modal-body" id="ModalRemovePrinterBody"></div>
+              <div class="modal-footer">
+                  <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancel</button>
+                  <button class="btn btn-primary btn-sm" type="button" id="btnPrinterRemove">Delete</button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <script type="text/javascript">
+	var oTable;
+	$(document).ready(function() {
+        oTable = $('#list-datatable').DataTable({
+        	"order": [[0, "desc"]],
+            "paging": true,
+            "pageLength": 10,
+            "processing": true,
+            "serverSide": true,
+            'ajax': {
+                'type': 'POST',
+                'url': '/API/DTGetPrinterList'
+            },
+            'columns':[
+                { 'data': 'PrinterName'},
+                { 'data': 'PrinterQueue'},
+                { 'data': 'PrinterType'},
+                { 'data': 'Description'},
+                { 'data': 'CreateDate'},
+                { 'data': 'CanDelete', 'render': AddButton}
+			],
+            	"columnDefs": [
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 5
+                }
+            ]
+		});
+
+		$('#AddPrinterModal').on('shown.bs.modal', function () {
+			$('#PrinterName').focus();
+		});
+	});
+    
+
+  var AddButton = function (data, type, full, meta) {
+    	var Render = '';
+        if(data){
+        	var dataID = full.PrinterName;
+        	Render = '<a class="open-DeletePrinter btn btn-danger btn-xs" role="button" data-toggle="modal" data-target="#PrinterRemoveModal" data-id="' + dataID + '">Delete</a>';
+        }
+
+        return Render;
+    }
+
+    $(function(){
+    	$('input#PrinterName').on({
+    		keydown: function(e){
+    			if(e.which === 32)
+    				return false;
+    		},
+    		change: function(){
+    			this.value = this.value.replace(/\s/g, '');
+    		}
+    	});
+    });
+
+    $(function(){
+    	$('input#PrinterQueue').on({
+    		keydown: function(e){
+    			if(e.which === 32)
+    				return false;
+    		},
+    		change: function(){
+    			this.value = this.value.replace(/\s/g, '');
+    		}
+    	});
+    });
+
+    $(document).on("click", ".open-DeletePrinter", function () {
+        var MyData = $(this).data('id');
+        //var Myobj = MyData.split("|");
+        $(".modal-content #RemovePrinterName").val(MyData);
+        $("#ModalRemovePrinterBody").text('Select "Delete" below to remove Printer ' + MyData + ' from the system. ');
+    });
+
+    $(document).on("click", "#btnPrinterRemove", function () {
+        var RemovePrinterName = $("#RemovePrinterName").val();
+
+        $.ajax({
+            type: "GET",
+            url: '/API/deletePrinter?id=' + RemovePrinterName
+        })
+        .done(function (data) {
+        	if(!data.Success){
+        		if(data.Err){
+        			alert(data.Err);
+				} else {
+        			location.reload(true);
+        		}
+        	} else {
+        		$('#PrinterRemoveModal').modal('toggle');
+        		oTable.ajax.reload();
+        	}
+        });
+        return false;
+    });
+
+    $(document).on("click", "#CreatePrinter", function () {
+    	let AllGood = true;
+    	var obj = {};
+
+		let PrinterName = $("#PrinterName" ).val();
+		let PrinterQueue = $("#PrinterQueue" ).val();
+		let Description =  $("#Description" ).val();
+		let PrinterType = $("#PrinterType" ).val();
+
+		if(PrinterName){
+			if(PrinterQueue){
+				if(!Description){
+					Description = "";
+				}
+
+				obj.PrinterName = PrinterName;
+				obj.PrinterQueue = PrinterQueue;
+				obj.Description = Description;
+				obj.PrinterType = PrinterType;
+
+				$.ajax({
+					type: "POST",
+					url: '/API/addPrinter',
+					data: JSON.stringify(obj),
+					dataType: "json",
+					contentType: "application/json; charset=utf-8",
+				})
+				.done(function (data) {
+					if(!data.Success){
+						if(data.Err){
+							alert(data.Err);
+						} else {
+							location.reload(true);
+						}
+					} else {
+						$('#AddPrinterModal').modal('toggle');
+						oTable.ajax.reload();
+					}
+				});
+			} else {
+				alert("Enter Printer Queue");
+			}
+		} else {
+			alert("Enter Printer Name");
+		}
+
+        return false;
+    });
+    </script>

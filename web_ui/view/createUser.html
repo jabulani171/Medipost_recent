@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title> Registration </title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <form action="/createUser" method="post" enctype="multipart/form-data">
+    <div class="title">
+      <h3>Registration</h3>
+    </div>
+    <div class="field">
+      <label>UserID:</label>
+      <input type="text" name="uid" id="uid" required />
+      <br />
+    </div>
+    <div class="field">
+      <label>FirstName:</label>
+      <input type="text" name="firstName" required />
+    </div>
+    <div class="field">
+      <label>LastName:</label>
+      <input type="text" name="LastName" required />
+      <br />
+    </div>
+    <div class="field">
+      <label>Password:</label>
+      <input type="password" name="psw" id="psw" required />
+      <br />
+    </div>
+    <div class="field">
+      <label>Confirm Password:</label>
+      <input type="password" id="psw_c" required />
+      <br />
+    </div>
+    <div class="field">
+      <input class="submit-btn" type="submit" value="Submit" id="CreateU" required />
+    </div>
+    <label id="error-message"></label>
+  </form>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const info = urlParams.get('info');
+
+    if(info) {
+      const errorMessage = document.getElementById("error-message");
+      errorMessage.innerText = info;
+      errorMessage.style.display = "block";
+    }
+	
+	
+	
+	$(document).on("click", "#CreateU", function () {
+		var uid = $("#uid").val();
+		
+		if(uid.length < 5){
+			alert('Invalid UserID');
+			return false;
+		}
+	
+		var psw = $("#psw").val();
+		var cpsw = $("#psw_c").val();
+		if(psw != cpsw ){
+			alert('Password mismatch');
+			return false;
+		}
+		
+		//if(){}
+		
+		
+		
+	});
+  </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<head>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+  <script src="../morris.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.js"></script>
+  <script src="lib/example.js"></script>
+  <link rel="stylesheet" href="lib/example.css">
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.min.css">
+  <link rel="stylesheet" href="../morris.css">
+</head>
+<body>
+<h1>Bar charts</h1>
+
+<div id="graph" style="width:50%;"></div>
+<script>
+Morris.Bar({
+  element: 'graph',
+  data: [
+    {x: 'New', y: 3},
+    {x: 'Started', y: 2},
+    {x: 'Picked', y: 1}
+  ],
+  xkey: 'x',
+  ykeys: ['y'],
+  labels: ['Y']
+}).on('click', function(i, row){
+  console.log(i, row);
+});
+</script>
+</body>

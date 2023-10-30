@@ -1,0 +1,85 @@
+
+    <div class="title">
+        <div class="col-lg-5"></div>
+        <div class="col-lg-3">
+      <h3 class="text-danger"><b>Patient Label Reject</b></h3>
+    </div>
+  </div>
+  
+  <div class="clearfix"></div>
+  
+  <div class="row">
+      <div class="col-lg-5"></div>
+      <div class="col-lg-3">
+          <div style="text-align:center;"><h4 ><b>SCAN PATIENT LABEL BARCODE</b></h4></div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-lg-5"></div>
+      <div class="col-lg-3">
+          <input type="text" class="form-control" id="ItemScan">
+      </div>
+   </div>
+   
+ 
+
+  
+  <div class="modal fade" id="ReasonModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="text-center"><b class="text-danger">Patient Label Reject</b></h4>
+              </div>
+  
+              <div class="modal-body" id="ModalReasonBody"></div>
+              <div class="modal-footer">
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <script type="text/javascript">
+
+      $(document).ready(function(){
+          $('#ItemScan').focus();
+  
+          $("#ReasonModal").on('hide.bs.modal', function () {
+              $('#ItemScan').val('');
+              $('#ModalReasonBody').text('');
+              $('#ItemScan').focus();
+          });
+      });
+
+      $('#ItemScan').keypress(function(event){
+  
+          var keycode = (event.keyCode ? event.keyCode : event.which);
+          if(keycode == '13'){
+              var obj = {};
+  
+              let ItemScan = $('#ItemScan').val();
+  
+              if(ItemScan){
+                  obj.ScannedItem = ItemScan;
+  
+                  $.ajax({
+                      type: "POST",
+                      url: '/API/BottleGetScannedItem',
+                      data: JSON.stringify(obj),
+                      dataType: "json",
+                      contentType: "application/json; charset=utf-8",
+                  })
+                  .done(function (data) {
+                      if(!data){
+                          $('#ModalReasonBody').text('Failed to retrieve data');
+                      } else {
+                          $('#ModalReasonBody').text(data.Reason);
+                      }
+  
+                      $('#ReasonModal').modal('toggle');
+                  });
+              }
+          }
+      });
+  </script>
+  

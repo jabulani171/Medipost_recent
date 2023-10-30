@@ -1,0 +1,103 @@
+<div class="page-title">
+  <div class="title_left">
+	<h3>BAG INFORMATION LIST</h3>
+  </div>
+</div>
+
+<div class="clearfix"></div>
+{{#Granted}}
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="x_panel">
+	  <div class="x_title">
+		<h2><small>List of all bags processed in the system</small></h2>
+		<div class="clearfix"></div>
+	  </div>
+	  <div class="x_content">
+		<table width="100%" id="Bag-datatable" class="table table-striped jambo_table table-bordered nowrap">
+			<thead>
+				<tr>
+					<th>BagID</th>
+					<th>BatchID</th>
+					<th>PickupPoint</th>
+					<th>ScriptGroupNo</th>
+					<th>BagRef</th>
+					<th>DeliveryManifestNo</th>
+					<th>BatchReference</th>
+					<th>ConsignmentReferenceNo</th>
+					<th>LastRdt</th>
+					<th>User</th>
+					<th>CreateDate</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	  </div>
+	</div>
+  </div>
+ </div>
+ {{/Granted}}
+ {{^Granted}}
+ <div class="row">
+	<div class="jumbotron">
+		<div class="col-sm-12">
+			<div style="text-align:center;"><h4 class="text-danger"><b>USER NOT AUTHERISED</b></h4></div>
+		</div>
+	</div>
+ </div>
+ {{/Granted}}
+
+<script type="text/javascript">
+	var oTable;
+	$(document).ready(function() {
+        oTable = $('#Bag-datatable').DataTable({
+        	"order": [[10, "desc"]],
+            "paging": true,
+            "pageLength": 10,
+            "processing": true,
+            "serverSide": true,
+            'ajax': {
+                'type': 'POST',
+                'url': '/API/DTGetBagList'
+            },
+            'columns':
+                [
+                { 'data': 'BagID'},
+                { 'data': 'BatchID' , 'render': BHAddLink},
+                { 'data': 'PickupPoint' },
+                { 'data': 'ScriptGroupNo'},
+                { 'data': 'BagRef'},
+                { 'data': 'DeliveryManifestNo'},
+                { 'data': 'BatchReference'},
+                { 'data': 'ConsignRefNo'},
+                { 'data': 'LastRdt'},
+                { 'data': 'User'},
+                { 'data': 'CreateDate'},
+                { 'data': 'AddReprintBtn', 'render': BHAddButton },
+                ],
+            	"columnDefs": [
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 11
+                }
+            ]
+		});
+	});
+
+    var BHAddButton = function (data, type, full, meta) {
+        var Render = '<a href="/API/bagDetails?id=' + full.BagID + '" class="btn btn-info btn-sm" role="button">More Details</a>';
+
+        return Render;
+    }
+
+    var BHAddLink = function (data, type, full, meta) {
+    	var Link = data;
+
+    	Link = '<a href="/API/batchdetail?id=' + full.BatchID + '" style="color: grey;"><u><b>' + full.BatchID + '</b></u></a>';
+
+        return Link;
+    }
+</script>

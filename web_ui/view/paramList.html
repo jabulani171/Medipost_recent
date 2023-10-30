@@ -1,0 +1,108 @@
+<div class="page-title">
+	<div class="title_left">
+	  <h3>PARAMETER LIST</h3>
+	</div>
+  </div>
+  
+  <div class="clearfix"></div>
+  
+  <div class="row">
+	<div class="col-md-12 col-sm-12 col-xs-12">
+	  <div class="x_panel">
+		<div class="x_title">
+		  <div class="clearfix"></div>
+		</div>
+		<div class="x_content">
+		  {{#Granted}}
+		  <div class="row">
+			  <div style="text-align:center;"   >
+				  <span><label for="selusers">Parameter: &nbsp;&nbsp;</label></span>
+				  <span class="dropdown">
+					  <button class="btn btn-info dropdown-toggle" type="button"  data-toggle="dropdown">{{SelectedParam}}
+					  <span class="caret"></span></button>
+					  <ul class="dropdown-menu">
+						  {{#SysParams}}
+						  <li><a href="/API/selectparam?id={{ParameterName}}" class="form-control">{{ParamDesc}}</a></li>
+						  {{/SysParams}}
+					  </ul>
+				  </span>
+				  <br /><br />
+				  <div class="col-sm-2">&nbsp;</div>
+				  <div class="col-sm-8"    >
+					  <div class="panel panel-primary">
+						  <div class="panel-body"  >
+							  <form class="form" action="/API/updateparameter?id={{ID}}"  method="post" enctype="multipart/form-data">
+								  <table align="center">
+									  {{#ParamFields}}
+									  <tr >
+									  <td style="text-align:left"><b>{{Field}}<b></td><td>&nbsp;&nbsp;</td><td><input  name="{{Key}}" class="form-control" type="text" value="{{Value}}"></td>
+									  </tr>
+									  {{/ParamFields}}
+								  </table>
+								  <hr />
+								  <div align="center" id="btnUpdate" >
+									  <button type="submit" class="btn-btn-info-btn-md" >Update Parameter</button>
+								  </div>
+							  </form>
+						  </div>
+					  </div>
+				  </div>
+				  <div class="col-sm-2">&nbsp;</div>
+			  </div>
+		  </div>
+		  {{/Granted}}
+		  {{^Granted}}
+		  <div class="row">
+			  <div class="jumbotron">
+				  <div class="col-sm-12">
+					  <div style="text-align:center;"><h4 class="text-danger"><b>USER NOT AUTHERISED</b></h4></div>
+				  </div>
+			  </div>
+		  </div>
+		  {{/Granted}}
+		</div>
+	  </div>
+	</div>
+  </div>
+  
+  <script type="text/javascript">	
+  
+	
+		  
+  $(document).ready(function(){
+	  
+		{{#alertMsg}}
+		  myFunction(); 
+		  function myFunction() {
+			  var result = true;
+			  while(result){
+				  result = alert("{{alertMsg}}");
+			  }
+		  }
+		  {{/alertMsg}} 
+				 
+	  
+  
+	   $(document).on("click", ".btn-btn-info-btn-md", function () {
+			  
+			  $.ajax({
+				  type: 'POST',
+				  url: '/API/systemParameter' ,
+				  dataType: "json",
+				  contentType: "application/json; charset=utf-8",
+			  }).done(function (data) {
+				  if(!data.Success){
+					  if(data.Err){
+						  alert(data.Err);
+					  } else
+						{
+						  location.reload(true);
+						  
+							  }}		
+						});
+				});
+									  
+   }
+  
+  </script>
+  

@@ -1,0 +1,214 @@
+<div class="page-title">
+    <div class="title_left">
+      <h3>PATIENT CARTON LABEL</h3>
+    </div>
+  </div>
+  
+  <div class="clearfix"></div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2><small>Detail records for carton label</small></h2>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <table width="100%" id="batch-detail-datatable" class="table table-striped jambo_table table-bordered nowrap">
+              <thead>
+                  <tr>
+                    <th>Client_Name</th>
+					<th>Client_Address</th>
+					<th>Cell_No</th>
+					<th>Dosage_Line_1</th>
+					<th>Dosage_Line_2</th>
+					<th>Pharmacy</th>
+					<th>Next_Collection_Date</th>
+					<th>Pat</th>
+					<th>Batch</th>
+					<th>Collection_Date</th>
+					<th>Second_Rx_Ref</th>
+					<th>Repeat</th>
+					  <th></th>
+                  </tr>
+              </thead>
+              <tbody>
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+   </div>
+
+   <div id="EditRdtModal" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="text-center">Carton Labeling</h4>
+			</div>
+			<div class="modal-body">
+				
+			    <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Client_Name">Client_Name</label>
+				  <input type="text" class="form-control" id="Client_Name" readonly>
+				</div>
+			  </div>
+			  	
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Client_Address">Client_Address</label>
+				  <input type="text" class="form-control" id="Client_Address" readonly>
+				</div>
+			  </div>
+
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Cell_No">Cell_No</label>
+				  <input type="text" class="form-control" id="Cell_No" readonly>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Dosage_Line_1">Dosage_Line_1</label>
+				  <input type="text" class="form-control" id="Dosage_Line_1" readonly>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Dosage_Line_2">Dosage_Line_2</label>
+				  <input type="text" class="form-control" id="Dosage_Line_2" readonly>
+				</div>
+			  </div>
+			
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Pharmacist">Pharmacist</label>
+				  <input type="text" class="form-control" id="Pharmacist" readonly>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Next_Collection_Date">Next_Collection_Date</label>
+				  <input type="text" class="form-control" id="Next_Collection_Date" readonly>
+				</div>
+			  </div>
+			
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Pat">Pat</label>
+				  <input type="text" class="form-control" id="Pat" readonly>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Batch">Batch</label>
+				  <input type="text" class="form-control" id="Batch" readonly>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Collection_Date">Collection_Date</label>
+				  <input type="text" class="form-control" id="Collection_Date" readonly>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Second_Rx_Ref">Second_Rx_Ref</label>
+				  <input type="text" class="form-control" id="Second_Rx_Ref" readonly>
+				</div>
+			  </div>
+			  <div class="row">
+				<div class="col-md-4 mb-3">
+				  <label for="Repeat">Repeat</label>
+				  <input type="text" class="form-control" id="Repeat" readonly>
+				</div>
+			  </div>
+	
+			 
+			</div>
+			<div class="modal-footer">
+				<div class="row">
+					<div class="col-md-12">
+						<button type="button" class="btn btn-info btn-md" id="ModifyReprintCarton" >Print Carton Label</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+  
+  <script type="text/javascript">
+      var oTable;
+      $(document).ready(function() {
+          let MyId = '{{Filter}}';
+          var Url = '/API/DtGetCartonLabel';
+          if(MyId){
+               Url += '?id=' + MyId;
+          }
+          oTable = $('#batch-detail-datatable').DataTable({
+              "order": [[0, "asc"]],
+              "paging": true,
+              "pageLength": 10,
+              "processing": true,
+              "serverSide": true,
+              'ajax': {
+                  'type': 'POST',
+                  'url': '/API/DtGetCartonLabel',
+              },
+              'columns':
+                  [
+                  {'data': 'Client_Name'},
+                  {'data': 'Client_Address'},
+                  {'data': 'Cell_No'},
+                  {'data': 'Dosage_Line_1'},
+                  { 'data': 'Dosage_Line_2'},
+                  {'data': 'Pharmacist'},
+                  {'data': 'Next_Collection_Date'},
+                  {'data': 'Patient'},
+                  {'data': 'Batch'},
+                  {'data': 'Collection_Date'},
+                  {'data': 'Second_Rx_Ref'},
+				  {'data': 'Repeat'},
+				{'data': 'StatReprint', 'render': AddButton}
+              ]
+          })
+      });
+  
+	  var AddButton = function (data, type, full, meta) {
+    	var Render = '';
+		if(data){
+			var dataID =  full.Client_Name + '|' + full.Client_Address + '|'+ full.Cell_No +'|'+full.Dosage_Line_1+ '|' + full.Dosage_Line_2+'|'+full.Pharmacist+'|'+full.Next_Collection_Date+'|'+full.Patient+'|'+full.Batch+'|'+full.Collection_Date+'|'+full.Second_Rx_Ref+'|'+full.Repeat;
+			
+			Render += '&nbsp;&nbsp;';
+			Render += '<a class="open-Print btn btn-info btn-xs" role="button" data-toggle="modal" data-target="#EditRdtModal" data-id="' + dataID + '">Print</a>';
+		    }
+
+        return Render;
+    }
+
+	$(document).on("click", ".open-Print", function () {
+		var MyData = $(this).data('id');
+        var Myobj = MyData.split("|");
+		
+		  
+		$('#Client_Name').val(Myobj[0]);
+		$('#Client_Address').val(Myobj[1]);
+		$('#Cell_No').val(Myobj[2]);
+		$('#Dosage_Line_1').val(Myobj[3]);
+		$('#Dosage_Line_2').val(Myobj[4]);
+		$('#Pharmacist').val(Myobj[5]);
+		$('#Next_Collection_Date').val(Myobj[6]);
+		$('#Pat').val(Myobj[7]);
+		$('#Batch').val(Myobj[8]);
+		$('#Collection_Date').val(Myobj[9]);
+		$('#Second_Rx_Ref').val(Myobj[10]);
+		$('#Repeat').val(Myobj[11]);
+		
+		
+    });
+      
+
+  </script>
+  

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Connxion WCS </title>
+
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="/vendors/animate.css/animate.min.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="/build/css/custom.min.css" rel="stylesheet">
+  </head>
+
+  <body class="login">
+  <style>
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+  </style>
+    <div>
+      <div class="login_wrapper">
+        <div class="animate form login_form">
+          <img class="center" style="height: 50px;" src="/images/connxion_wcs.png" alt="Connxion WCS" /><br />
+          <section class="login_content">
+            <form name="form" action="/API/logon" method="post"  enctype="multipart/form-data" >
+              <h1>Login</h1>
+              <div>
+                <input type="text" class="form-control" placeholder="Username" name="uid" required autofocus/>
+              </div>
+              <div>
+                <input type="password" class="form-control" placeholder="Password" name="psw" required/>
+              </div>
+              <div>
+              	<button class="btn btn-default submit" id="login-btn">Log in</button>
+              </div>
+
+              <div class="clearfix"></div>
+
+              <div class="separator">
+                <div class="clearfix"></div>
+                <br />
+
+                <div>
+                  <!--<h1><i class="fa fa-cogs"></i> ConnXion WCS</h1>-->
+                  <p>©2016 All Rights Reserved. Privacy and Terms</p>
+                </div>
+              </div>
+            </form>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script>
+		{{#alertMsg}}
+		myFunction();
+		function myFunction() {
+			var result = true;
+			while(result){
+				result = alert("{{alertMsg}}");
+			}
+		}
+		{{/alertMsg}}
+    </script>
+  </body>
+</html>

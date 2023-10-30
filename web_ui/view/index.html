@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Connxion WCS</title>
+
+    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- FastClick -->
+    <script src="/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="/vendors/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="/vendors/Chart.js/dist/Chart.min.js"></script>
+
+    <!-- bootstrap-datetimepicker -->
+    <link href="/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <!-- bootstrap-datetimepicker -->
+    <script src="/vendors/moment/min/moment.min.js"></script>
+    <script src="/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="/vendors/animate.css/animate.min.css" rel="stylesheet">
+    <!-- Datatables -->
+    <link href="/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+    <!-- bootstrap-progressbar -->
+    <link href="/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <script src="/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- Custom Theme Style -->
+    <link href="/build/css/custom.min.css" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+
+  <body class="nav-md">
+      <div class="container body">
+        <div class="main_container">
+          <div class="col-md-3 left_col">
+            <div class="left_col scroll-view">
+              <div class="navbar nav_title" style="border: 0;">
+                <a href="#" class="site_title"><i class="fa fa-cogs"></i> <span>ConnXion WCS</span></a>
+              </div>
+
+            <div class="clearfix"></div>
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                  <li><a href="/API/dashboard"><i class="fa fa-home"></i> dashboard </span></a>
+                  </li>
+
+				
+	
+                  <li><a><i class="fa fa-edit"></i> Operation <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+						<li><a href="/API/batchFullDetails">Batch Full Details</a></li>
+						<li><a href="/API/batchSummary">Batch Summary</a></li>
+                    </ul>
+                  </li>
+
+				  <li><a><i class="fa fa-edit"></i> Maintenance <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+					  <li><a href="/API/trays">Packed Patients</a></li>
+					  <li><a href="/API/bottleLabel">Bottle Label</a></li>
+					  <li><a href="/API/cartonLabel">Carton Label</a></li>
+					  <li><a href="/API/shippingcartonLabel">Shipping Carton Label</a></li>
+                    </ul>
+                  </li>
+				  
+                  <li><a><i class="fa fa-edit"></i> WorkStations <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+						
+						
+						<li><a href="/API/packingstation">Packing Station</a></li>
+						<li><a href="/API/shippingstation">Shipping Station</a></li>
+						<li><a href="/API/trayreject">Patient Bottle Reject</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-desktop"></i> System <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+						<li><a href="/API/userMan">User Management</a></li>
+					  <li><a href="/API/groupMan">Group Management</a></li>
+					  <!--<li><a href="#ModifyPasswordModal" data-toggle=modal>Change Password</a></li>-->
+					  <li><a href="/API/systemParameter">System Parameters</a></li>
+                      <li><a>Device Setup<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+							<li><a href="/API/packingstationlist">Packing Station List</a></li>
+							<li><a href="/API/shippingstationlist">Shipping Station List</a></li>
+							<li><a href="/API/printerlist">Printing Station List</a></li>
+							
+                          </ul>
+                      </li>
+                      <li><a>Logging<span class="fa fa-chevron-down"></span></a>
+                          <ul class="nav child_menu">
+							<li class="sub_menu"><a href="/API/auditlogs">Audit Logs</a></li>
+							<li class="sub_menu"><a href="/API/rolesSetup">Roles Setup</a></li>
+							</ul>
+
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+            <!-- /sidebar menu -->
+
+            </div>
+          </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li><img class="logo" style="height: 50px;" src="/images/logo.svg" alt="PD"/></li>
+                <li class="">
+                  <a data-toggle="dropdown" aria-expanded="false">
+                    <!--<img src="images/custLogo.png" style="height: 50px;" alt="">--><b>{{user}}</b>
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <li><a href="/API/logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                  </ul>
+                </li>
+                <li role="presentation" class="dropdown" id="notification">
+                  <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-envelope-o"></i>
+                    <span class="badge bg-red" id="MsgCount">{{Count}}</span>
+                  </a>
+                  <ul id="menu1" class="dropdown-menu list-unstyled msg_list" role="menu">
+                    {{#Record}}
+                    <li>
+                      <a>
+                        <span>
+                          <span>{{Type}}</span>
+                          <span class="time">{{CreateDate}}</span>
+                        </span>
+                        <span style="display:block;text-overflow: ellipsis;width: 200px;overflow: hidden; white-space: nowrap;">
+                          {{Message}}
+                        </span>
+                      </a>
+                    </li>
+                    {{/Record}}
+                    <li>
+                      <div class="text-center">
+                        <a href="/API/aeLogging">
+                          <strong>See All Alerts</strong>
+                          <i class="fa fa-angle-right"></i>
+                        </a>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+			{{> ext}}
+
+			<div id="ModifyPasswordModal" class="modal fade" role="dialog">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h6 class="text-center">Change User {{user}}'s Password</h6>
+						</div>
+						<form class="form" action="/API/ModifyUser" method="post" enctype="multipart/form-data">
+							<div class="modal-body">
+								<fieldset>
+									<div class="col-sm-10 sr-only">
+										<label for="uid"></label>
+										<input type="text" class="form-control input-sm" placeholder="Username" id="uid" name="uid" value="{{user}}">
+									</div>
+									<div class="col-sm-10">
+										<label for="Oldpsw"></label>
+										<input type="password" class="form-control input-sm" placeholder="Old Password" id="Oldpsw" name="Oldpsw" autofocus required>
+									</div>
+									<div class="col-sm-10">
+										<label for="Newpsw"></label>
+										<input type="password" class="form-control input-sm" placeholder="New Password" id="Newpsw" name="Newpsw" required>
+									</div>
+								</fieldset>
+							</div>
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-info btn-md" id="submit">Change Password</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        <footer>
+          <div class="pull-right">
+            Connxion WCS
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+        </div>
+      </div>
+
+    <script type="text/javascript">
+
+$(document).ready(function() {
+
+			var UserName = '{{user}}';
+			var socket = io.connect("http://{{SocketIOUrl}}");
+
+			if(UserName){
+				socket.emit('this_user', UserName);
+
+				socket.on(UserName, function(data){
+					if(data.notificationType == 'AE'){
+						$('#notification').show();
+						$('#MsgCount').text(data.count);
+
+						$("#menu1").empty();
+
+						let x = 0;
+						let Max = data.count;
+						if(Max > 3){
+							Max = 3;
+						}
+
+						while(x < Max){
+							$("#menu1").append('<li><a><span><span>' + data.data[x].Type + '</span><span class="time">' + data.data[x].CreateDate + '</span></span><span style="display:block;text-overflow: ellipsis;width: 200px;overflow: hidden; white-space: nowrap;">' + data.data[x].Message + '</span></a></li>');
+							x++;
+						}
+
+						$("#menu1").append('<li><div class="text-center"><a href="/API/aeLogging"><strong>See All Alerts</strong><i class="fa fa-angle-right"></i></a></div></li>');
+					}
+
+					if(data.notificationType == 'ProductVerification'){
+						if(myVar){
+							clearTimeout(myVar);
+						}
+
+						let Line = data.line;
+						let History = data.history;
+						let Update = data.update;
+
+						if(Update){
+							let ScannedData = Update[2];
+
+							$('#Line' + Line + 'ScannedItem').text(ScannedData.Barcode);
+							$('#GoodLine' + Line).removeAttr('style');
+							$('#BadLine' + Line).removeAttr('style');
+
+							if(ScannedData.Valid == 'Yes'){
+								$('#GoodLine' + Line).attr('style','background-color: Lime; Color: White');
+							} else {
+								$('#BadLine' + Line).attr('style','background-color: Red; Color: White');
+							}
+
+							var myVar = setTimeout(function(){
+								$('#GoodLine' + Line).removeAttr('style');
+								$('#BadLine' + Line).removeAttr('style');
+
+								$('#ProdVerLine' + Line + '-datatable tbody').empty();
+								let Tbl = $('#ProdVerLine' + Line + '-datatable tbody');
+								let x = 0;
+								while(x < Update.length){
+									let Row = '<tr><td>' + Update[x].Barcode + '</td><td>' + Update[x].Valid + '</td><td>' + Update[x].Script + '</td></tr>';
+									Tbl.append(Row);
+									x++;
+								}
+
+							}, 2000);
+						} else {
+							$('#GoodLine' + Line).removeAttr('style');
+							$('#BadLine' + Line).removeAttr('style');
+
+							$('#ProdVerLine' + Line + '-datatable tbody').empty();
+							let Tbl = $('#ProdVerLine' + Line + '-datatable tbody');
+
+							let x = 0;
+							while(x < History.length){
+								let Row = '<tr><td>' + History[x].Barcode + '</td><td>' + History[x].Valid + '</td><td>' + History[x].Script + '</td></tr>';
+								Tbl.append(Row);
+								x++;
+							}
+						}
+					}
+
+					if(data.notificationType == 'EmptyCartonVerification'){
+						if(myCatonVar){
+							clearTimeout(myCatonVar);
+						}
+
+						let Line = data.line;
+						let History = data.history;
+						let Update = data.update;
+
+						if(Update){
+							let ScannedData = Update[2];
+
+							$('#Line' + Line + 'CartonScannedItem').text(ScannedData.Barcode);
+							$('#GoodCartonLine' + Line).removeAttr('style');
+							$('#BadCartonLine' + Line).removeAttr('style');
+
+							if(ScannedData.Valid == 'Yes'){
+								$('#GoodCartonLine' + Line).attr('style','background-color: Lime; Color: White');
+							} else {
+								$('#BadCartonLine' + Line).attr('style','background-color: Red; Color: White');
+							}
+
+							var myCatonVar = setTimeout(function(){
+								$('#GoodCartonLine' + Line).removeAttr('style');
+								$('#BadCartonLine' + Line).removeAttr('style');
+
+								$('#CartonLine' + Line + '-datatable tbody').empty();
+								let Tbl = $('#CartonLine' + Line + '-datatable tbody');
+								let x = 0;
+								while(x < Update.length){
+									let Row = '<tr><td>' + Update[x].Barcode + '</td><td>' + Update[x].Valid + '</td></tr>';
+									Tbl.append(Row);
+									x++;
+								}
+
+							}, 2000);
+						} else {
+							$('#GoodCartonLine' + Line).removeAttr('style');
+							$('#BadCartonLine' + Line).removeAttr('style');
+
+							$('#CartonLine' + Line + '-datatable tbody').empty();
+							let Tbl = $('#CartonLine' + Line + '-datatable tbody');
+
+							let x = 0;
+							while(x < History.length){
+								let Row = '<tr><td>' + History[x].Barcode + '</td><td>' + History[x].Valid + '</td></tr>';
+								Tbl.append(Row);
+								x++;
+							}
+						}
+					}
+
+					if(data.notificationType == 'PrintApplyLines'){
+						if(myBotLineVar){
+							clearTimeout(myBotLineVar);
+						}
+
+						let Line = data.line;
+						let PatientId = data.patientId? data.patientId: '-';
+						let ScriptNo = data.scriptNo? data.scriptNo: '-';
+						let ScannedItem = data.scannedItem;
+						let Reject = data.reject;
+
+						if(ScannedItem){
+							$('#Line' + Line + 'BotScriptScannedItem').text(ScannedItem);
+							$('#GoodBotLine' + Line).removeAttr('style');
+							$('#BadBotLine' + Line).removeAttr('style');
+
+							if(Reject){
+								$('#BadBotLine' + Line).attr('style','background-color: Red; Color: White');
+							} else {
+								$('#GoodBotLine' + Line).attr('style','background-color: Lime; Color: White');
+							}
+
+							var myBotLineVar = setTimeout(function(){
+								$('#GoodBotLine' + Line).removeAttr('style');
+								$('#BadBotLine' + Line).removeAttr('style');
+
+								$('#BotScriptVerLine' + Line + '-datatable tbody').empty();
+								let Tbl = $('#BotScriptVerLine' + Line + '-datatable tbody');
+
+								let Row = '<tr><td>' + PatientId + '</td><td>' + ScriptNo + '</td></tr>';
+								Tbl.append(Row);
+
+							}, 2000);
+						} else {
+							$('#GoodBotLine' + Line).removeAttr('style');
+							$('#BadBotLine' + Line).removeAttr('style');
+
+							$('#BotScriptVerLine' + Line + '-datatable tbody').empty();
+							let Tbl = $('#BotScriptVerLine' + Line + '-datatable tbody');
+
+							let Row = '<tr><td>' + PatientId + '</td><td>' + ScriptNo + '</td></tr>';
+							Tbl.append(Row);
+						}
+					}
+
+					if(data.notificationType == 'ScriptLabelVerification'){
+						if(myScriptLabelVar){
+							clearTimeout(myScriptLabelVar);
+						}
+
+						let Line = data.line;
+						let History = data.history;
+						let Update = data.update;
+
+						if(Update){
+							let ScannedData = Update[2];
+
+							$('#ScriptLabelLine' + Line + 'ScannedItem').text(ScannedData.Barcode);
+							$('#GoodScriptLabelLine' + Line).removeAttr('style');
+							$('#BadScriptLabelLine' + Line).removeAttr('style');
+
+							if(ScannedData.Valid == 'Yes'){
+								$('#GoodScriptLabelLine' + Line).attr('style','background-color: Lime; Color: White');
+							} else {
+								$('#BadScriptLabelLine' + Line).attr('style','background-color: Red; Color: White');
+							}
+
+							var myScriptLabelVar = setTimeout(function(){
+								$('#GoodScriptLabelLine' + Line).removeAttr('style');
+								$('#BadScriptLabelLine' + Line).removeAttr('style');
+
+								$('#ScriptLabelVerLine' + Line + '-datatable tbody').empty();
+								let Tbl = $('#ScriptLabelVerLine' + Line + '-datatable tbody');
+								let x = 0;
+								while(x < Update.length){
+									let Row = '<tr><td>' + Update[x].Scanned + '</td><td>' + Update[x].Valid + '</td></tr>';
+									Tbl.append(Row);
+									x++;
+								}
+
+							}, 2000);
+						} else {
+							$('#GoodScriptLabelLine' + Line).removeAttr('style');
+							$('#BadScriptLabelLine' + Line).removeAttr('style');
+
+							$('#ScriptLabelVerLine' + Line + '-datatable tbody').empty();
+							let Tbl = $('#ScriptLabelVerLine' + Line + '-datatable tbody');
+
+							let x = 0;
+							while(x < History.length){
+								let Row = '<tr><td>' + History[x].Scanned + '</td><td>' + History[x].Valid + '</td></tr>';
+								Tbl.append(Row);
+								x++;
+							}
+						}
+					}
+
+					if(data.notificationType == 'DespatchLabelVerification'){
+						if(myDespatchLabelVar){
+							clearTimeout(myDespatchLabelVar);
+						}
+
+						let History = data.history;
+						let Update = data.update;
+
+						if(Update){
+							let ScannedData = Update[2];
+
+							$('#DespatchCartonScannedItem').text(ScannedData.Barcode);
+							$('#GoodDespatchCarton').removeAttr('style');
+							$('#BadDespatchCarton').removeAttr('style');
+
+							if(ScannedData.Valid == 'Yes'){
+								$('#GoodDespatchCarton').attr('style','background-color: Lime; Color: White');
+							} else {
+								$('#BadDespatchCarton').attr('style','background-color: Red; Color: White');
+							}
+
+							var myDespatchLabelVar = setTimeout(function(){
+								$('#GoodDespatchCarton').removeAttr('style');
+								$('#BadDespatchCarton').removeAttr('style');
+
+								$('#DespatchCarton-datatable tbody').empty();
+								let Tbl = $('#DespatchCarton-datatable tbody');
+								let x = 0;
+								while(x < Update.length){
+									let Row = '<tr><td>' + Update[x].Carton + '</td><td>' + Update[x].Valid + '</td><td>' + History[x].ParcelReference + '</td></tr>';
+									Tbl.append(Row);
+									x++;
+								}
+
+							}, 2000);
+						} else {
+							$('#GoodDespatchCarton').removeAttr('style');
+							$('#BadDespatchCarton').removeAttr('style');
+
+							$('#DespatchCarton-datatable tbody').empty();
+							let Tbl = $('#DespatchCarton-datatable tbody');
+
+							let x = 0;
+							while(x < History.length){
+								let Row = '<tr><td>' + History[x].Carton + '</td><td>' + History[x].Valid + '</td><td>' + History[x].ParcelReference + '</td></tr>';
+								Tbl.append(Row);
+								x++;
+							}
+						}
+					}
+
+					if(data.notificationType == 'ShipmentLabelVerification'){
+						if(myShipmentLabelVar){
+							clearTimeout(myShipmentLabelVar);
+						}
+
+						let History = data.history;
+						let Update = data.update;
+
+						if(Update){
+							let ScannedData = Update[2];
+							let Dispval =  ScannedData.ScannedItems? ScannedData.ScannedItems: '-';
+
+							$('#DespatchLabelScannedItem').text(Dispval);
+							$('#GoodDespatchLabel').removeAttr('style');
+							$('#BadDespatchLabel').removeAttr('style');
+
+							if(ScannedData.Valid == 'Yes'){
+								$('#GoodDespatchLabel').attr('style','background-color: Lime; Color: White');
+							} else {
+								$('#BadDespatchLabel').attr('style','background-color: Red; Color: White');
+							}
+
+							var myShipmentLabelVar = setTimeout(function(){
+								$('#GoodDespatchLabel').removeAttr('style');
+								$('#BadDespatchLabel').removeAttr('style');
+
+								$('#DespatchLabel-datatable tbody').empty();
+								let Tbl = $('#DespatchLabel-datatable tbody');
+								let x = 0;
+								while(x < Update.length){
+									let Row = '<tr><td>' + Update[x].ScannedItems + '</td><td>' + Update[x].Valid + '</td></tr>';
+									Tbl.append(Row);
+									x++;
+								}
+
+							}, 2000);
+						} else {
+							$('#GoodDespatchLabel').removeAttr('style');
+							$('#BadDespatchLabel').removeAttr('style');
+
+							$('#DespatchLabel-datatable tbody').empty();
+							let Tbl = $('#DespatchLabel-datatable tbody');
+
+							let x = 0;
+							while(x < History.length){
+								let Row = '<tr><td>' + History[x].ScannedItems + '</td><td>' + History[x].Valid + '</td></tr>';
+								Tbl.append(Row);
+								x++;
+							}
+						}
+					}
+				});
+			}
+		});
+    </script>
+
+    <!-- bootstrap-datetimepicker -->
+    <script src="/vendors/moment/min/moment.min.js"></script>
+    <script src="/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <!-- jQuery -->
+    <script src="/vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- morris.js
+    <script src="/vendors/raphael/raphael.min.js"></script>
+    <script src="/vendors/morris.js/morris.min.js"></script>-->
+    <!-- FastClick -->
+    <script src="/vendors/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="/vendors/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="/vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- Datatables -->
+    <script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="/build/js/custom.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+  </body>
+</html>
+

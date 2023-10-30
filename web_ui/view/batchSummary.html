@@ -1,0 +1,278 @@
+<h2  class="text-center"><b class="text-danger">PRODUCTION BATCH LIST</b></h2> </div>
+
+
+<div class="clearfix"></div>
+{{#Granted}}
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2><small>Batch orders by file transfer</small></h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <table width="100%" id="batch-datatable" class="table table-striped jambo_table table-bordered nowrap">
+            <thead>
+                <tr>
+                  <th>Production_Batch</th>
+                  <th>Patients</th>
+                  <th>Processed</th>
+                  <th>Date_Required</th>
+                  <th>Status</th>
+                  <th>Date_Created</th>
+                  <th>Last_Update</th>
+                  <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+ </div>
+ {{/Granted}}
+
+ <div class="modal fade" id="validate" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 ><div class="text-danger" class="modal-body" id="modal2"></div></h4>
+              <form>
+              <h4 >Validate Expiry Date <input type="text" id="vEDate" ></h4>
+              <h4 >Validate Batch <input type="text" id="vBatch" ></h4>
+              
+             </form>
+          </div>
+
+          <input type = "hidden" id="Production_Batch" value="">
+
+          <div class="modal-footer">
+              <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancel</button>
+              <button class="btn btn-primary btn-sm" type="button" id="btnStart">Start</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="modal fade" id="PrintModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+      <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="text-center">Print Batch</h4>
+    </div>
+
+    <input type = "hidden" id="Production_Batch" value="">
+
+          <div class="modal-body" id="ModalPrintBody"></div>
+          <div class="modal-footer">
+              <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancel</button>
+              <button class="btn btn-primary btn-sm" type="button" id="btnPrint">Print</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+ <div class="modal fade" id="StartModal" tabindex="-1" role="dialog">
+     <div class="modal-dialog">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                 <h4 ><div class="text-danger" class="modal-body" id="ModalStartBody"></div></h4>
+                 <form id="form1">
+                 <h4 >Enter Expiry Date <input type="text" id="eDate" ></h4>
+                 <h4 >Enter Batch <input type="text" id="batch" ></h4>
+               
+                </form>
+             </div>
+
+             <input type = "hidden" id="Production_Batch" value="">
+             <div class="modal-body" id="ModalStartBody"></div>
+             <div class="modal-footer">
+              <a onclick="$('#StartModal').modal('hide');$('#validate').modal('show');" href='#'>Next</a>
+             </div>
+         </div>
+     </div>
+</div>
+
+{{^Granted}}
+<div class="row">
+	<div class="jumbotron">
+		<div class="col-sm-12">
+			<div style="text-align:center;"><h4 class="text-danger"><b>USER NOT AUTHERISED</b></h4></div>
+		</div>
+	</div>
+ </div>
+ {{/Granted}}
+
+  <script type="text/javascript">
+  
+  //Enter expiry date and batch
+  $(document).on("click", "#btnStart", function () {
+    var expiryDate = $('#eDate').val();
+     var batch = $('#batch').val();
+
+     //Validation values
+     var validateExpiryDate = $('#vEDate').val();
+     var validateBatch = $('#vBatch').val();
+ var message;
+     if(expiryDate.length > 0 || batch.length > 0)
+     {
+      if(validateExpiryDate.length > 0 || validateBatch.length > 0)
+     {
+           if(expiryDate === validateExpiryDate)
+            {
+                    if(batch === validateBatch){
+                     
+                      
+      var Production_Batch = $("#Production_Batch").val();
+      $.ajax({
+          type: "GET",
+          url: '/API/startBatch?id=' +  Production_Batch
+      })
+      .done(function (data) {
+        if(!data.Success){
+          if(data.Err){
+            alert(data.Err);
+      } else if(data.Msg){
+        alert(data.Msg);
+      }
+      else
+      {
+            location.reload(true);
+          }
+        } else {
+          $('#validate').modal('toggle');
+          oTable.ajax.reload();
+        }
+      });
+     
+                        }
+                        else{
+                          alert("batch and validateBatch are not the same");
+                        }
+          }
+          else{
+            alert("expiryDate and validateExpiryDate are not the same");
+          }
+     }
+     else{
+      alert("No empty fields");
+    }
+    }
+    else{
+      alert("No empty fields");
+    }
+    
+
+  
+
+    return false;
+  });
+
+
+
+
+  </script>
+
+<script type="text/javascript">
+    var oTable;
+    $(document).ready(function() {
+        oTable = $('#batch-datatable').DataTable({
+            "order": [[0, "desc"]],
+            "paging": true,
+            "pageLength": 5,
+            "processing": true,
+            "serverSide": true,
+            'ajax': {
+                'type': 'POST',
+                'url': '/API/DTGetBatchSummary'
+            },
+            'columns':
+                [
+                {'data':'Production_Batch','render': BHAddLink },
+                {'data':'Patients'},
+                {'data':'Processed'},
+                {'data':'Date_Required'},
+                {'data':'Status', 'render': TransformData },
+                {'data':'created_at'},
+                {'data':'updated_at'},
+                {'data':'AddButton', 'render': BHAddButton }
+                
+            ]
+     
+        });
+    });
+
+    var BHAddButton = function (data, type, full, meta) {
+    var Render = '';
+
+    if(full.Status === 'New'){
+      Render = '<button type="button" class="open-Print btn btn-info" data-toggle="modal" data-target="#PrintModal" data-id="' + full.Production_Batch + '">Print</button>';
+    }
+    else
+  if(full.Status === 'Printed' ){
+    Render = '<button type="button" class="open-Start btn btn-info" data-toggle="modal" data-target="#StartModal" data-id="' + full.Production_Batch + '">Start</button>';
+   
+  }
+      return Render;
+  }
+
+  var TransformData = function (data, type, full, meta) {
+		let Render = '<b>' + data + '</b>';
+
+		return Render;
+	}
+
+var BHAddLink = function (data, type, full, meta) {
+    var Link = data;
+
+    Link = '<a href="/API/batchFullDetails?id=' + full.Production_Batch + '" style="color: grey;"><u><b>' + full.Production_Batch + '</b></u></a>';
+
+      console.log(Link);
+  
+      return Link;
+  }
+
+  $(document).on("click", ".open-Start", function () {
+      var MyData = $(this).data('id');
+
+      $(".modal-content #Production_Batch").val(MyData);
+      $("#ModalStartBody").text('Starting Batch - ' + MyData);
+      $("#modal2").text('Starting Batch - ' + MyData);
+  });
+
+
+$(document).on("click", ".open-Print", function () {
+        var MyData = $(this).data('id');
+
+        $(".modal-content #Production_Batch").val(MyData);
+        $("#ModalPrintBody").text('Are you sure you want to print Batch ' + MyData);
+    });
+
+    $(document).on("click", "#btnPrint", function () {
+        var Production_Batch = $("#Production_Batch").val();
+        $.ajax({
+            type: "GET",
+            url: '/API/printBatch?id=' + Production_Batch
+        })
+        .done(function (data) {
+        	if(!data.Success){
+        		if(data.Err){
+        			alert(data.Err);
+				} else {
+        			location.reload(true);
+        		}
+        	} else {
+        		$('#PrintModal').modal('toggle');
+        		oTable.ajax.reload();
+        	}
+        });
+        return false;
+    });
+ 
+
+  
+</script>
